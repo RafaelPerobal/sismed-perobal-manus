@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Receitas Médicas - Duas Vias (Paisagem)</title>
+    <style>
+        /* Reset e configurações básicas */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', Arial, sans-serif;
+            font-size: 11px;
+            line-height: 1.4;
+            color: #333;
+            background: #f8fafc;
+        }
+
+        /* Layout A4 Paisagem */
+        .page {
+            width: 297mm;
+            height: 210mm;
+            margin: 0 auto;
+            background: white;
+            display: flex;
+            padding: 10mm;
+            gap: 5mm;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        /* Container de cada via */
+        .via {
+            flex: 1;
+            border: 1px solid #ddd;
+            display: flex;
+            flex-direction: column;
+            background: white;
+            position: relative;
+        }
+
+        /* Linha pontilhada separadora */
+        .via:first-child::after {
+            content: '';
+            position: absolute;
+            right: -2.5mm;
+            top: 0;
+            bottom: 0;
+            width: 1px;
+            border-right: 2px dashed #999;
+        }
+
+        /* Cabeçalho com logo e identificação */
+        .header {
+            background: linear-gradient(135deg, #2563eb, #1d4ed8);
+            color: white;
+            padding: 8px 12px;
+            text-align: center;
+            position: relative;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 4px;
+        }
+
+        .logo-icon {
+            width: 24px;
+            height: 24px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #2563eb;
+            font-weight: bold;
+            font-size: 12px;
+        }
+
+        .secretaria-info {
+            font-size: 9px;
+            line-height: 1.2;
+            margin-bottom: 4px;
+        }
+
+        .via-identifier {
+            position: absolute;
+            top: 8px;
+            right: 12px;
+            background: rgba(255,255,255,0.2);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 8px;
+            font-weight: bold;
+        }
+
+        .receituario-title {
+            background: #f8fafc;
+            color: #1e40af;
+            padding: 6px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 12px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        /* Conteúdo da receita */
+        .content {
+            flex: 1;
+            padding: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        /* Seções de informações */
+        .info-section {
+            display: flex;
+            gap: 12px;
+        }
+
+        .info-group {
+            flex: 1;
+        }
+
+        .info-label {
+            font-weight: bold;
+            color: #374151;
+            font-size: 10px;
+            margin-bottom: 2px;
+        }
+
+        .info-field {
+            border-bottom: 1px solid #d1d5db;
+            min-height: 18px;
+            padding: 2px 0;
+            font-size: 11px;
+        }
+
+        .info-field.small {
+            max-width: 60px;
+        }
+
+        /* Tabela de medicamentos */
+        .medicamentos {
+            flex: 1;
+        }
+
+        .medicamentos-title {
+            background: #e0f2fe;
+            padding: 6px;
+            text-align: center;
+            font-weight: bold;
+            color: #0c4a6e;
+            border: 1px solid #0891b2;
+            margin-bottom: 8px;
+        }
+
+        .medicamentos-table {
+            width: 100%;
+            border-collapse: collapse;
+            border: 1px solid #d1d5db;
+        }
+
+        .medicamentos-table th {
+            background: #f3f4f6;
+            padding: 4px 6px;
+            font-size: 9px;
+            font-weight: bold;
+            border: 1px solid #d1d5db;
+            text-align: center;
+        }
+
+        .medicamentos-table td {
+            padding: 4px 6px;
+            font-size: 10px;
+            border: 1px solid #d1d5db;
+            vertical-align: top;
+        }
+
+        .medicamentos-table tr:nth-child(even) {
+            background: #f9fafb;
+        }
+
+        /* Seção controle especial */
+        .controle-especial {
+            background: #fef3c7;
+            border: 2px solid #f59e0b;
+            padding: 8px;
+            margin: 8px 0;
+        }
+
+        .controle-title {
+            font-weight: bold;
+            color: #92400e;
+            font-size: 10px;
+            margin-bottom: 4px;
+        }
+
+        .controle-list {
+            list-style: disc;
+            margin-left: 16px;
+            font-size: 9px;
+            color: #92400e;
+        }
+
+        /* Rodapé com assinatura */
+        .footer {
+            border-top: 1px solid #e2e8f0;
+            padding: 8px 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #f8fafc;
+        }
+
+        .qr-placeholder {
+            width: 40px;
+            height: 40px;
+            border: 1px solid #d1d5db;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 8px;
+            color: #6b7280;
+            text-align: center;
+        }
+
+        .codigo-validacao {
+            font-weight: bold;
+            font-size: 10px;
+            color: #374151;
+        }
+
+        .assinatura-area {
+            text-align: center;
+            flex: 1;
+            margin: 0 16px;
+        }
+
+        .assinatura-linha {
+            border-top: 1px solid #374151;
+            margin-top: 20px;
+            padding-top: 4px;
+            font-size: 10px;
+            font-weight: bold;
+            color: #1e40af;
+        }
+
+        /* Estilos para impressão */
+        @media print {
+            body {
+                background: white;
+                margin: 0;
+                padding: 0;
+            }
+            
+            .page {
+                box-shadow: none;
+                margin: 0;
+                width: 100%;
+                height: 100vh;
+            }
+            
+            @page {
+                size: A4 landscape;
+                margin: 10mm;
+            }
+        }
+
+        /* Responsividade para telas menores */
+        @media screen and (max-width: 1200px) {
+            .page {
+                transform: scale(0.7);
+                transform-origin: top center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="page">
+        <!-- VIA 1 - FARMÁCIA -->
+        <div class="via">
+            <div class="header">
+                <div class="via-identifier">1ª VIA - RETENÇÃO NA FARMÁCIA</div>
+                <div class="logo">
+                    <div class="logo-icon">+</div>
+                    <div>
+                        <div style="font-weight: bold; font-size: 11px;">SAÚDE</div>
+                        <div style="font-size: 8px;">Perobal</div>
+                    </div>
+                </div>
+                <div class="secretaria-info">
+                    SECRETARIA MUNICIPAL DE SAÚDE<br>
+                    Rua Jaracatiá, 1060 - Centro<br>
+                    CEP: 87590-000 | Telefone: (44) 3625-1225<br>
+                    Email: saude@perobal.pr.gov.br
+                </div>
+            </div>
+
+            <div class="receituario-title">
+                RECEITUÁRIO MÉDICO &nbsp;&nbsp;&nbsp; N° 1832
+            </div>
+
+            <div class="content">
+                <div class="info-section">
+                    <div class="info-group">
+                        <div class="info-label">Data:</div>
+                        <div class="info-field">21/08/2025</div>
+                    </div>
+                    <div class="info-group">
+                        <div class="info-label">Validade:</div>
+                        <div class="info-field">20/09/2025</div>
+                    </div>
+                </div>
+
+                <div class="info-section">
+                    <div class="info-group">
+                        <div class="info-label">MÉDICO *</div>
+                        <div class="info-field">Dr. João Silva Santos</div>
+                    </div>
+                    <div class="info-group">
+                        <div class="info-label">CRM *</div>
+                        <div class="info-field">12345-PR</div>
+                    </div>
+                </div>
+
+                <div class="info-group">
+                    <div class="info-label">CARIMBO</div>
+                    <div class="info-field" style="min-height: 30px;"></div>
+                </div>
+
+                <div class="info-group">
+                    <div class="info-label">PACIENTE *</div>
+                    <div class="info-field">ALIFER SOARES</div>
+                </div>
+
+                <div class="info-section">
+                    <div class="info-group">
+                        <div class="info-label">CNS *</div>
+                        <div class="info-field">704.7057.8584.0430</div>
+                    </div>
+                    <div class="info-group">
+                        <div class="info-label">NASCIMENTO *</div>
+                        <div class="info-field">15/03/1985 (40 anos)</div>
+                    </div>
+                </div>
+
+                <div class="medicamentos">
+                    <div class="medicamentos-title">PRESCRIÇÃO MÉDICA</div>
+                    <table class="medicamentos-table">
+                        <thead>
+                            <tr>
+                                <th>MEDICAMENTO</th>
+                                <th>DOSAG.</th>
+                                <th>QUANT.</th>
+                                <th>POSOLOGIA</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Amoxicilina 500mg</td>
+                                <td>500mg</td>
+                                <td>21</td>
+                                <td>Tomar 1 comprimido de 8/8 horas por 7 dias</td>
+                            </tr>
+                            <tr style="background: #fee2e2;">
+                                <td><strong>Diazepam 10mg</strong></td>
+                                <td>10mg</td>
+                                <td>30</td>
+                                <td>Tomar 1 comprimido à noite por 30 dias</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="controle-especial">
+                    <div class="controle-title">CONTROLE ESPECIAL</div>
+                    <ul class="controle-list">
+                        <li>Substância sujeita a controle - Portaria 344/98</li>
+                        <li>Não permitida renovação - Validade 30 dias</li>
+                        <li>Medicamento de controle especial - Notificação obrigatória</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer">
+                <div class="qr-placeholder">QR CODE</div>
+                <div class="assinatura-area">
+                    <div class="assinatura-linha">ASSINATURA DO MÉDICO</div>
+                </div>
+                <div class="codigo-validacao">Cód: L3A77PR</div>
+            </div>
+        </div>
+
+        <!-- VIA 2 - PACIENTE -->
+        <div class="via">
+            <div class="header">
+                <div class="via-identifier">2ª VIA - ORIENTAÇÃO AO PACIENTE</div>
+                <div class="logo">
+                    <div class="logo-icon">+</div>
+                    <div>
+                        <div style="font-weight: bold; font-size: 11px;">SAÚDE</div>
+                        <div style="font-size: 8px;">Perobal</div>
+                    </div>
+                </div>
+                <div class="secretaria-info">
+                    SECRETARIA MUNICIPAL DE SAÚDE<br>
+                    Rua Jaracatiá, 1060 - Centro<br>
+                    CEP: 87590-000 | Telefone: (44) 3625-1225<br>
+                    Email: saude@perobal.pr.gov.br
+                </div>
+            </div>
+
+            <div class="receituario-title">
+                RECEITUÁRIO MÉDICO &nbsp;&nbsp;&nbsp; N° 1832
+            </div>
+
+            <div class="content">
+                <div class="info-section">
+                    <div class="info-group">
+                        <div class="info-label">Data:</div>
+                        <div class="info-field">21/09/2025</div>
+                    </div>
+                    <div class="info-group">
+                        <div class="info-label">Validade:</div>
+                        <div class="info-field">20/10/2025</div>
+                    </div>
+                </div>
+
+                <div class="info-section">
+                    <div class="info-group">
+                        <div class="info-label">MÉDICO *</div>
+                        <div class="info-field">Dr. João Silva Santos</div>
+                    </div>
+                    <div class="info-group">
+                        <div class="info-label">CRM *</div>
+                        <div class="info-field">12345-PR</div>
+                    </div>
+                </div>
+
+                <div class="info-group">
+                    <div class="info-label">CARIMBO</div>
+                    <div class="info-field" style="min-height: 30px;"></div>
+                </div>
+
+                <div class="info-group">
+                    <div class="info-label">PACIENTE *</div>
+                    <div class="info-field">ALIFER SOARES</div>
+                </div>
+
+                <div class="info-section">
+                    <div class="info-group">
+                        <div class="info-label">CNS *</div>
+                        <div class="info-field">704.7057.8584.0430</div>
+                    </div>
+                    <div class="info-group">
+                        <div class="info-label">NASCIMENTO *</div>
+                        <div class="info-field">15/03/1985 (40 anos)</div>
+                    </div>
+                </div>
+
+                <div class="medicamentos">
+                    <div class="medicamentos-title">PRESCRIÇÃO MÉDICA</div>
+                    <table class="medicamentos-table">
+                        <thead>
+                            <tr>
+                                <th>MEDICAMENTO</th>
+                                <th>DOSAG.</th>
+                                <th>QUANT.</th>
+                                <th>POSOLOGIA</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Amoxicilina 500mg</td>
+                                <td>500mg</td>
+                                <td>21</td>
+                                <td>Tomar 1 comprimido de 8/8 horas por 7 dias</td>
+                            </tr>
+                            <tr style="background: #fee2e2;">
+                                <td><strong>Diazepam 10mg</strong></td>
+                                <td>10mg</td>
+                                <td>30</td>
+                                <td>Tomar 1 comprimido à noite por 30 dias</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="controle-especial">
+                    <div class="controle-title">CONTROLE ESPECIAL</div>
+                    <ul class="controle-list">
+                        <li>Substância sujeita a controle - Portaria 344/98</li>
+                        <li>Não permitida renovação - Validade 30 dias</li>
+                        <li>Medicamento de controle especial - Notificação obrigatória</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer">
+                <div class="qr-placeholder">QR CODE</div>
+                <div class="assinatura-area">
+                    <div class="assinatura-linha">ASSINATURA DO MÉDICO</div>
+                </div>
+                <div class="codigo-validacao">Cód: L3A77PR</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Função para imprimir a receita
+        function imprimirReceita() {
+            window.print();
+        }
+
+        // Simulação da lógica do SISMED para duas vias
+        const receitaConfig = {
+            layout: 'landscape-dual', // paisagem com duas vias
+            vias: 2,
+            via1: {
+                tipo: 'farmacia',
+                titulo: '1ª VIA - RETENÇÃO NA FARMÁCIA',
+                dataEmissao: new Date(), // Data atual
+                dataValidade: new Date(Date.now() + (30 * 24 * 60 * 60 * 1000)) // +30 dias
+            },
+            via2: {
+                tipo: 'paciente',
+                titulo: '2ª VIA - ORIENTAÇÃO AO PACIENTE',
+                dataEmissao: new Date(Date.now() + (30 * 24 * 60 * 60 * 1000)), // +1 mês
+                dataValidade: new Date(Date.now() + (60 * 24 * 60 * 60 * 1000)) // +60 dias (30 dias da nova emissão)
+            },
+            medicamentosControlados: true,
+            notasControleEspecial: [
+                'Substância sujeita a controle - Portaria 344/98',
+                'Não permitida renovação - Validade 30 dias',
+                'Medicamento de controle especial - Notificação obrigatória'
+            ]
+        };
+
+        // Adiciona botão de impressão (para demonstração)
+        document.addEventListener('DOMContentLoaded', function() {
+            const printButton = document.createElement('button');
+            printButton.textContent = 'Imprimir Receita';
+            printButton.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: #2563eb;
+                color: white;
+                padding: 10px 20px;
+                border: none;
+                border-radius: 6px;
+                cursor: pointer;
+                font-weight: bold;
+                z-index: 1000;
+            `;
+            printButton.onclick = imprimirReceita;
+            document.body.appendChild(printButton);
+        });
+    </script>
+</body>
+</html>

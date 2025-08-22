@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Configurações - SISMED Perobal</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script src="common.js"></script>
+    <script src="configuracoes.js"></script>
+</head>
+<body>
+    <header class="app-header">
+        <div class="logo-wrap">
+            <img src="logo_sis_med.png" class="logo-sis" alt="Logotipo do SISMED">
+            <div>
+                <div class="title">SISMED PEROBAL</div>
+                <div class="subtitle" id="hdr-prof">Não identificado</div>
+            </div>
+        </div>
+        <nav class="top-nav">
+            <a href="index.html">Início</a>
+            <a href="pacientes.html">Pacientes</a>
+            <a href="medicamentos.html">Medicamentos</a>
+            <a href="receitas.html">Receitas</a>
+            <a href="configuracoes.html" class="active">Configurações</a>
+        </nav>
+    </header>
+    <main class="container">
+        <section class="card">
+            <h2>Configurações do Sistema</h2>
+            <p class="muted" style="margin-top: -8px; margin-bottom: 16px;">Personalize a aparência e configurações do SISMED Perobal.</p>
+            
+            <div class="config-section">
+                <h3>Tema do Sistema</h3>
+                <p class="muted">Escolha a cor principal do sistema</p>
+                <div class="color-picker">
+                    <div class="color-option" data-color="#2563eb" style="background-color: #2563eb;" title="Azul (Padrão)"></div>
+                    <div class="color-option" data-color="#16a34a" style="background-color: #16a34a;" title="Verde"></div>
+                    <div class="color-option" data-color="#dc2626" style="background-color: #dc2626;" title="Vermelho"></div>
+                    <div class="color-option" data-color="#f97316" style="background-color: #f97316;" title="Laranja"></div>
+                    <div class="color-option" data-color="#6d28d9" style="background-color: #6d28d9;" title="Roxo"></div>
+                </div>
+            </div>
+            
+            <div class="config-section">
+                <h3>Logotipos</h3>
+                <p class="muted">Personalize os logotipos utilizados no sistema</p>
+                
+                <div class="logo-config">
+                    <div class="logo-item">
+                        <h4>Logo do Sistema</h4>
+                        <p class="muted">Usado no cabeçalho das páginas</p>
+                        <div class="logo-preview">
+                            <img id="logoSistemaPreview" src="logo_sis_med.png" alt="Logo Sistema">
+                        </div>
+                        <div class="logo-actions">
+                            <label for="logoSistemaFile" class="btn">Alterar Logo</label>
+                            <input type="file" id="logoSistemaFile" accept="image/*" style="display: none;">
+                            <button id="resetLogoSistema" class="btn danger">Restaurar Padrão</button>
+                        </div>
+                    </div>
+                    
+                    <div class="logo-item">
+                        <h4>Logo das Receitas</h4>
+                        <p class="muted">Usado no cabeçalho das receitas impressas</p>
+                        <div class="logo-preview">
+                            <img id="logoReceitaPreview" src="logo_adminstr.png" alt="Logo Receita">
+                        </div>
+                        <div class="logo-actions">
+                            <label for="logoReceitaFile" class="btn">Alterar Logo</label>
+                            <input type="file" id="logoReceitaFile" accept="image/*" style="display: none;">
+                            <button id="resetLogoReceita" class="btn danger">Restaurar Padrão</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="config-section">
+                <h3>Dados do Sistema</h3>
+                <p class="muted">Gerencie os dados armazenados no sistema</p>
+                
+                <div class="data-actions">
+                    <button id="exportData" class="btn">Exportar Backup</button>
+                    <label for="importData" class="btn primary">Importar Backup</label>
+                    <input type="file" id="importData" accept=".json" style="display: none;">
+                    <button id="clearAllData" class="btn danger">Limpar Todos os Dados</button>
+                </div>
+            </div>
+            
+            <div class="config-section">
+                <h3>Informações do Sistema</h3>
+                <div class="system-info">
+                    <p><strong>Versão:</strong> 2.0.0</p>
+                    <p><strong>Última Atualização:</strong> <span id="lastUpdate">21/08/2025</span></p>
+                    <p><strong>Pacientes Cadastrados:</strong> <span id="totalPatients">0</span></p>
+                    <p><strong>Medicamentos Cadastrados:</strong> <span id="totalMedicines">0</span></p>
+                </div>
+            </div>
+        </section>
+    </main>
+    <div id="notificationToast" class="notification-toast"></div>
+</body>
+</html>
+

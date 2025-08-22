@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Identificação - SISMED Perobal</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script src="common.js"></script>
+    <script src="identificacao.js"></script>
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-card">
+            <div class="logo-section">
+                <img src="logo_sis_med.png" alt="SisMed Perobal" class="logo-login">
+                <h1>SISMED PEROBAL</h1>
+                <p class="subtitle">Sistema de Saúde Municipal</p>
+            </div>
+            
+            <form id="formIdentificacao" class="identification-form">
+                <h2>Identificação do Usuário</h2>
+                <p class="form-description">Identifique-se para acessar o sistema</p>
+                
+                <div class="field-group">
+                    <label class="field">
+                        <span>Tipo de Usuário *</span>
+                        <select id="tipoUsuario" required>
+                            <option value="">Selecione...</option>
+                            <option value="Médico">Médico</option>
+                            <option value="Enfermeiro">Enfermeiro</option>
+                            <option value="Farmacêutico">Farmacêutico</option>
+                            <option value="Fisioterapeuta">Fisioterapeuta</option>
+                            <option value="Visitante">Visitante</option>
+                            <option value="Outro">Outro</option>
+                        </select>
+                    </label>
+                    
+                    <label class="field" id="especialidadeField" style="display: none;">
+                        <span>Especialidade</span>
+                        <input id="especialidade" type="text" placeholder="Informe sua especialidade">
+                    </label>
+                    
+                    <label class="field">
+                        <span>Nome Completo *</span>
+                        <input id="nomeCompleto" type="text" style="text-transform:uppercase" required placeholder="Digite seu nome completo">
+                    </label>
+                    
+                    <label class="field" id="registroField">
+                        <span>Registro Profissional *</span>
+                        <input id="registroProfissional" type="text" required placeholder="Ex: CRM 12345">
+                    </label>
+                </div>
+                
+                <div class="form-options">
+                    <label class="checkbox-field">
+                        <input id="lembrarDados" type="checkbox">
+                        <span>Lembrar meus dados neste computador</span>
+                    </label>
+                </div>
+                
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">Entrar no Sistema</button>
+                    <button type="button" id="btnLimpar" class="btn btn-secondary">Limpar Dados</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <div id="notificationToast" class="notification-toast"></div>
+</body>
+</html>
+

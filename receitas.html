@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Receitas - SISMED Perobal</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <script src="js/common.js"></script>
+    <script src="js/receitas.js"></script>
+</head>
+<body>
+    <header class="app-header">
+        <div class="logo-wrap">
+            <img src="logo_sis_med.png" class="logo-sis" alt="Logotipo do SISMED">
+            <div>
+                <div class="title">SISMED PEROBAL</div>
+                <div class="subtitle" id="hdr-prof">Não identificado</div>
+            </div>
+        </div>
+        <nav class="top-nav">
+            <a href="index.html">Início</a>
+            <a href="pacientes.html">Pacientes</a>
+            <a href="medicamentos.html">Medicamentos</a>
+            <a href="receitas.html" class="active">Receitas</a>
+            <a href="configuracoes.html">Configurações</a>
+        </nav>
+    </header>
+    <main class="container">
+        <section class="card">
+            <h2>Emitir Receita Médica</h2>
+            <p class="muted" style="margin-top: -8px; margin-bottom: 16px;">Selecione o paciente e configure a receita. Sempre serão geradas 2 vias (farmácia e paciente).</p>
+            <div class="grid-2" style="align-items: flex-end;">
+                <label class="field">
+                    <span>Paciente *</span>
+                    <select id="rxPatient">
+                        <option value="">Selecione um paciente...</option>
+                    </select>
+                </label>
+                <label class="field">
+                    <span>Quantidade de meses (1 a 6)</span>
+                    <select id="rxMonths">
+                        <option value="1">1 mês</option>
+                        <option value="2">2 meses</option>
+                        <option value="3">3 meses</option>
+                        <option value="4">4 meses</option>
+                        <option value="5">5 meses</option>
+                        <option value="6">6 meses</option>
+                    </select>
+                </label>
+            </div>
+            <div class="card light" style="margin-top: 20px;">
+                <div class="row space-between">
+                    <div>Lista de medicamentos</div>
+                    <div class="row">
+                        <input id="rxMedSearch" placeholder="Buscar">
+                        <button id="rxMedSearchBtn" class="btn">Buscar</button>
+                    </div>
+                </div>
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Sel.</th>
+                                <th>Nome</th>
+                                <th>Dosagem</th>
+                                <th>Apresentação</th>
+                                <th>Tipo</th>
+                            </tr>
+                        </thead>
+                        <tbody id="rxMedBody"></tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="actions">
+                <button id="rxNext" class="btn primary">Continuar</button>
+            </div>
+        </section>
+        <section id="rxStep2" class="card hidden">
+            <h2>Posologia e Observações</h2>
+            <div id="rxPosoList" class="grid-2"></div>
+            <label class="field" style="margin-top:12px">
+                <span>Observações gerais (opcional)</span>
+                <textarea id="rxObs" rows="3"></textarea>
+            </label>
+            <div class="actions">
+                <button id="rxBack" class="btn">Voltar</button>
+                <button id="rxGenerate" class="btn primary">Gerar e imprimir</button>
+            </div>
+        </section>
+
+        <!-- Secção para o histórico de receitas da sessão -->
+        <section id="sessionHistory" class="card hidden">
+            <h2>Receitas Geradas na Sessão</h2>
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Paciente</th>
+                            <th>Data/Hora</th>
+                            <th>Medicamentos</th>
+                            <th>Período</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="historyBody"></tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+    <div id="printRoot" class="print-root"></div>
+    <div id="notificationToast" class="notification-toast"></div>
+</body>
+</html>

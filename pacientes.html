@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pacientes - SISMED Perobal</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <script src="js/common.js"></script>
+    <script src="js/pacientes.js"></script>
+</head>
+<body>
+    <header class="app-header">
+        <div class="logo-wrap">
+            <img src="logo_sis_med.png" class="logo-sis" alt="Logotipo do SISMED">
+            <div>
+                <div class="title">SISMED PEROBAL</div>
+                <div class="subtitle" id="hdr-prof">Não identificado</div>
+            </div>
+        </div>
+        <nav class="top-nav">
+            <a href="index.html">Início</a>
+            <a href="pacientes.html" class="active">Pacientes</a>
+            <a href="medicamentos.html">Medicamentos</a>
+            <a href="receitas.html">Receitas</a>
+            <a href="configuracoes.html">Configurações</a>
+        </nav>
+    </header>
+    <main class="container">
+        <section class="card">
+            <div class="row space-between">
+                <h2>Gestão de Pacientes</h2>
+                <div class="search-actions">
+                    <div class="search-group">
+                        <input id="pacSearch" placeholder="Buscar por nome ou CNS" type="text">
+                        <button id="pacSearchBtn" class="btn">Buscar</button>
+                        <button id="pacClearSearch" class="btn" style="display: none;">Limpar</button>
+                    </div>
+                    <button id="pacNewBtn" class="btn primary">Novo Paciente</button>
+                </div>
+            </div>
+            <div class="search-info" id="searchInfo" style="display: none;">
+                <p class="muted">Resultados da busca: <span id="searchResults">0</span> paciente(s) encontrado(s)</p>
+            </div>
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Nome</th>
+                            <th>Nascimento</th>
+                            <th>CNS</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="pacBody"></tbody>
+                </table>
+                <div id="pacCount" class="muted"></div>
+            </div>
+        </section>
+    </main>
+    <div id="modal" class="modal hidden">
+        <div class="modal-box">
+            <header>Paciente</header>
+            <div class="modal-content">
+                <div class="grid-2">
+                    <label class="field">
+                        <span>Nome *</span>
+                        <input id="fNome" type="text" style="text-transform:uppercase">
+                    </label>
+                    <label class="field">
+                        <span>Data de Nascimento *</span>
+                        <input id="fNasc" type="date">
+                    </label>
+                    <label class="field">
+                        <span>CNS *</span>
+                        <input id="fCns" type="text">
+                    </label>
+                </div>
+            </div>
+            <footer class="actions">
+                <button id="modalCancel" class="btn">Cancelar</button>
+                <button id="modalOk" class="btn primary">Salvar</button>
+            </footer>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SISMED Perobal</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <script src="js/common.js"></script>
+    <script src="js/main.js"></script>
+</head>
+<body>
+    <header class="app-header">
+        <div class="logo-wrap">
+            <img src="logo_sis_med.png" alt="SisMed Perobal" class="logo-sis">
+            <div>
+                <div class="title">SISMED PEROBAL</div>
+                <div class="subtitle" id="hdr-prof">Não identificado</div>
+            </div>
+        </div>
+        <nav class="top-nav">
+            <a href="index.html" class="active">Início</a>
+            <a href="pacientes.html">Pacientes</a>
+            <a href="medicamentos.html">Medicamentos</a>
+            <a href="receitas.html">Receitas</a>
+            <a href="configuracoes.html">Configurações</a>
+        </nav>
+    </header>
+    <main class="container">
+        <section class="card">
+            <h2>Bem-vindo ao SISMED Perobal</h2>
+            <p class="muted" style="margin-top: -8px; margin-bottom: 16px;">Sistema de Gestão de Receitas Médicas</p>
+            <div class="user-info-card">
+                <div class="user-avatar">
+                    <span id="userInitial">?</span>
+                </div>
+                <div class="user-details">
+                    <h3 id="userName">Usuário não identificado</h3>
+                    <p id="userType">Faça login para acessar o sistema</p>
+                </div>
+                <div class="user-actions">
+                    <a href="identificacao.html" class="btn primary" id="loginBtn">Fazer Login</a>
+                    <button id="logoutBtn" class="btn danger" style="display: none;">Sair</button>
+                </div>
+            </div>
+        </section>
+        <section class="grid-4">
+            <div class="card kpi-card">
+                <div class="kpi-content">
+                    <div class="kpi-title">Pacientes</div>
+                    <div id="kpiPac" class="kpi-value">0</div>
+                    <p>Gerencie os cadastros de pacientes (nome, nascimento e CNS).</p>
+                </div>
+                <a class="btn" href="pacientes.html">Gerenciar Pacientes</a>
+            </div>
+            <div class="card kpi-card">
+                <div class="kpi-content">
+                    <div class="kpi-title">Medicamentos</div>
+                    <div id="kpiMed" class="kpi-value">0</div>
+                    <p>Adicione, edite ou remova medicamentos do sistema.</p>
+                </div>
+                <a class="btn" href="medicamentos.html">Gerenciar Medicamentos</a>
+            </div>
+            <div class="card kpi-card">
+                <div class="kpi-content">
+                    <div class="kpi-title">Receitas</div>
+                    <div class="kpi-value">Emitir</div>
+                    <p>Gere e imprima receitas médicas para os pacientes cadastrados.</p>
+                </div>
+                <a class="btn primary" href="receitas.html">Nova Receita</a>
+            </div>
+            <div class="card kpi-card">
+                <div class="kpi-content">
+                    <div class="kpi-title">Configurações</div>
+                    <div class="kpi-value">Sistema</div>
+                    <p>Configure temas, logos e outras preferências do sistema.</p>
+                </div>
+                <a class="btn" href="configuracoes.html">Configurar Sistema</a>
+            </div>
+        </section>
+        <section class="card">
+            <h2>Backup e Restauração de Dados</h2>
+            <p class="muted" style="margin-top: -8px; margin-bottom: 16px;">Exporte para salvar os dados ou importe para restaurar a partir de um ficheiro de backup.</p>
+            <div class="actions">
+                <button id="btnBackup" class="btn">Exportar Backup</button>
+                <label for="import-file" class="btn primary">Importar Backup</label>
+                <input type="file" id="import-file" accept=".json" style="display: none;">
+            </div>
+        </section>
+    </main>
+    <div id="notificationToast" class="notification-toast"></div>
+</body>
+</html>

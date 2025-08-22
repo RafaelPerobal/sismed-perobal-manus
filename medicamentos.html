@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medicamentos - SISMED Perobal</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <script src="js/common.js"></script>
+    <!-- CORREÇÃO: Nome do ficheiro corrigido e 'defer' adicionado -->
+    <script src="js/medicamentos.js"></script>
+</head>
+<body>
+    <header class="app-header">
+        <div class="logo-wrap">
+            <img src="logo_sis_med.png" class="logo-sis" alt="Logotipo do SISMED">
+            <div>
+                <div class="title">SISMED PEROBAL</div>
+                <div class="subtitle" id="hdr-prof">Não identificado</div>
+            </div>
+        </div>
+        <nav class="top-nav">
+            <a href="index.html">Início</a>
+            <a href="pacientes.html">Pacientes</a>
+            <a href="medicamentos.html" class="active">Medicamentos</a>
+            <a href="receitas.html">Receitas</a>
+            <a href="configuracoes.html">Configurações</a>
+        </nav>
+    </header>
+    <main class="container">
+        <section class="card">
+            <div class="row space-between">
+                <h2>Gestão de Medicamentos</h2>
+                <div class="search-actions">
+                    <div class="search-group">
+                        <input id="medSearch" placeholder="Buscar por nome" type="text">
+                        <button id="medSearchBtn" class="btn">Buscar</button>
+                        <button id="medClearSearch" class="btn" style="display: none;">Limpar</button>
+                    </div>
+                    <button id="medNewBtn" class="btn primary">Novo Medicamento</button>
+                </div>
+            </div>
+            <div class="search-info" id="searchInfo" style="display: none;">
+                <p class="muted">Resultados da busca: <span id="searchResults">0</span> medicamento(s) encontrado(s)</p>
+            </div>
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Nome</th>
+                            <th>Dosagem</th>
+                            <th>Apresentação</th>
+                            <th>Tipo</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="medBody"></tbody>
+                </table>
+                <div id="medCount" class="muted"></div>
+            </div>
+        </section>
+    </main>
+    <div id="modal" class="modal hidden">
+        <div class="modal-box">
+            <header>Medicamento</header>
+            <div class="modal-content">
+                <div class="grid-2">
+                    <label class="field">
+                        <span>Nome *</span>
+                        <input id="mNome" type="text" style="text-transform:uppercase">
+                    </label>
+                    <label class="field">
+                        <span>Dosagem *</span>
+                        <input id="mDosagem" type="text">
+                    </label>
+                    <label class="field">
+                        <span>Apresentação *</span>
+                        <input id="mApres" type="text">
+                    </label>
+                    <label class="field">
+                        <span>Controlado?</span>
+                        <select id="mCtl">
+                            <option value="0">Não</option>
+                            <option value="1">Sim</option>
+                        </select>
+                    </label>
+                </div>
+            </div>
+            <footer class="actions">
+                <button id="modalCancel" class="btn">Cancelar</button>
+                <button id="modalOk" class="btn primary">Salvar</button>
+            </footer>
+        </div>
+    </div>
+</body>
+</html>
