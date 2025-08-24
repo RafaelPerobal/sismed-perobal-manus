@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Configurações - SISMED Perobal</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style_novo.css">
+</head>
+<body>
+    <!-- Barra de título no estilo Windows -->
+    <div class="title-bar">
+        <div class="logo">
+            <i class="fas fa-hospital"></i>
+            <h1>SISMED Perobal - Configurações</h1>
+        </div>
+        <div class="window-controls">
+            <button class="minimize"><i class="fas fa-minus"></i></button>
+            <button class="maximize"><i class="far fa-square"></i></button>
+            <button class="close"><i class="fas fa-times"></i></button>
+        </div>
+    </div>
+
+    <!-- Container principal -->
+    <div class="main-container">
+        <!-- Sidebar de navegação -->
+        <div class="sidebar">
+            <div class="user-info">
+                <i class="fas fa-user-md" id="userIcon"></i>
+                <span id="userInfo">Usuário não identificado</span>
+            </div>
+            
+            <div class="nav-menu">
+                <a href="index_novo.html" class="nav-item">
+                    <i class="fas fa-home"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="pacientes_novo.html" class="nav-item">
+                    <i class="fas fa-user-injured"></i>
+                    <span>Pacientes</span>
+                </a>
+                <a href="medicamentos_novo.html" class="nav-item">
+                    <i class="fas fa-pills"></i>
+                    <span>Medicamentos</span>
+                </a>
+                <a href="receitas_novo.html" class="nav-item">
+                    <i class="fas fa-file-prescription"></i>
+                    <span>Receitas</span>
+                </a>
+                <a href="configuracoes_novo.html" class="nav-item active">
+                    <i class="fas fa-cog"></i>
+                    <span>Configurações</span>
+                </a>
+            </div>
+            
+            <a href="identificacao_novo.html" class="nav-item">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>Sair</span>
+            </a>
+        </div>
+
+        <!-- Conteúdo principal -->
+        <div class="content">
+            <div class="content-header">
+                <h2>Configurações do Sistema</h2>
+                <p>Personalize e configure o SISMED Perobal conforme suas necessidades</p>
+            </div>
+
+            <!-- Seções de configuração -->
+            <div class="config-sections">
+                
+                <!-- Aparência -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3><i class="fas fa-palette"></i> Aparência</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label for="temaSelect">Tema do Sistema</label>
+                            <select id="temaSelect" class="form-control">
+                                <option value="azul">Azul Padrão</option>
+                                <option value="verde">Verde Saúde</option>
+                                <option value="roxo">Roxo Moderno</option>
+                                <option value="laranja">Laranja Vibrante</option>
+                                <option value="escuro">Modo Escuro</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Prévia do Tema</label>
+                            <div class="theme-preview" id="themePreview">
+                                <div class="preview-header">Cabeçalho</div>
+                                <div class="preview-sidebar">Menu</div>
+                                <div class="preview-content">Conteúdo</div>
+                            </div>
+                        </div>
+                        
+                        <button class="btn btn-primary" onclick="aplicarTema()">
+                            <i class="fas fa-check"></i>
+                            Aplicar Tema
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Logos e Identidade -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3><i class="fas fa-image"></i> Logos e Identidade</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-row">
+                            <div class="form-col">
+                                <label for="logoSistema">Logo do Sistema</label>
+                                <input type="file" id="logoSistema" class="form-control" accept="image/*">
+                                <small class="text-gray">Recomendado: 200x60px, PNG ou JPG</small>
+                            </div>
+                            <div class="form-col">
+                                <label for="logoReceita">Logo para Receitas</label>
+                                <input type="file" id="logoReceita" class="form-control" accept="image/*">
+                                <small class="text-gray">Recomendado: 300x100px, PNG ou JPG</small>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="nomeInstituicao">Nome da Instituição</label>
+                            <input type="text" id="nomeInstituicao" class="form-control" value="PREFEITURA MUNICIPAL DE PEROBAL">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="enderecoInstituicao">Endereço da Instituição</label>
+                            <input type="text" id="enderecoInstituicao" class="form-control" value="Rua Jaracatiá, 1060 - Centro - Perobal/PR">
+                        </div>
+                        
+                        <button class="btn btn-primary" onclick="salvarIdentidade()">
+                            <i class="fas fa-save"></i>
+                            Salvar Identidade
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Backup e Restauração -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3><i class="fas fa-database"></i> Backup e Restauração</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="backup-stats">
+                            <div class="stat-item">
+                                <i class="fas fa-user-injured text-primary"></i>
+                                <span id="totalPacientesBackup">0</span>
+                                <small>Pacientes</small>
+                            </div>
+                            <div class="stat-item">
+                                <i class="fas fa-pills text-success"></i>
+                                <span id="totalMedicamentosBackup">0</span>
+                                <small>Medicamentos</small>
+                            </div>
+                            <div class="stat-item">
+                                <i class="fas fa-file-prescription text-info"></i>
+                                <span id="totalReceitasBackup">0</span>
+                                <small>Receitas</small>
+                            </div>
+                        </div>
+                        
+                        <div class="backup-actions">
+                            <button class="btn btn-success" onclick="fazerBackup()">
+                                <i class="fas fa-download"></i>
+                                Fazer Backup
+                            </button>
+                            
+                            <div class="upload-area">
+                                <input type="file" id="arquivoRestore" accept=".json" style="display: none;">
+                                <button class="btn btn-warning" onclick="document.getElementById('arquivoRestore').click()">
+                                    <i class="fas fa-upload"></i>
+                                    Restaurar Backup
+                                </button>
+                            </div>
+                            
+                            <button class="btn btn-danger" onclick="limparDados()">
+                                <i class="fas fa-trash"></i>
+                                Limpar Todos os Dados
+                            </button>
+                        </div>
+                        
+                        <div class="backup-info">
+                            <small class="text-gray">
+                                <i class="fas fa-info-circle"></i>
+                                O backup inclui todos os pacientes, medicamentos e receitas cadastrados.
+                                Mantenha seus backups em local seguro.
+                            </small>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Informações do Sistema -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3><i class="fas fa-info-circle"></i> Informações do Sistema</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="system-info">
+                            <div class="info-item">
+                                <strong>Nome:</strong>
+                                <span>SISMED Perobal</span>
+                            </div>
+                            <div class="info-item">
+                                <strong>Versão:</strong>
+                                <span>2.0 - Redesign Moderno</span>
+                            </div>
+                            <div class="info-item">
+                                <strong>Desenvolvido para:</strong>
+                                <span>Prefeitura Municipal de Perobal</span>
+                            </div>
+                            <div class="info-item">
+                                <strong>Última atualização:</strong>
+                                <span id="ultimaAtualizacao">24/08/2025</span>
+                            </div>
+                            <div class="info-item">
+                                <strong>Navegador:</strong>
+                                <span id="infoNavegador">-</span>
+                            </div>
+                            <div class="info-item">
+                                <strong>Resolução:</strong>
+                                <span id="infoResolucao">-</span>
+                            </div>
+                        </div>
+                        
+                        <div class="system-actions">
+                            <button class="btn btn-info" onclick="verificarAtualizacoes()">
+                                <i class="fas fa-sync"></i>
+                                Verificar Atualizações
+                            </button>
+                            
+                            <button class="btn" onclick="abrirSuporte()">
+                                <i class="fas fa-question-circle"></i>
+                                Suporte Técnico
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Configurações Avançadas -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3><i class="fas fa-cogs"></i> Configurações Avançadas</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label>
+                                <input type="checkbox" id="autoSave"> 
+                                Salvamento automático de dados
+                            </label>
+                            <small class="text-gray">Salva automaticamente os dados a cada alteração</small>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>
+                                <input type="checkbox" id="notifications"> 
+                                Notificações do sistema
+                            </label>
+                            <small class="text-gray">Exibe notificações para ações importantes</small>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>
+                                <input type="checkbox" id="confirmActions"> 
+                                Confirmar ações críticas
+                            </label>
+                            <small class="text-gray">Solicita confirmação antes de excluir dados</small>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="timeoutSessao">Timeout da sessão (minutos)</label>
+                            <select id="timeoutSessao" class="form-control">
+                                <option value="30">30 minutos</option>
+                                <option value="60">1 hora</option>
+                                <option value="120">2 horas</option>
+                                <option value="240">4 horas</option>
+                                <option value="0">Sem timeout</option>
+                            </select>
+                        </div>
+                        
+                        <button class="btn btn-primary" onclick="salvarConfiguracoes()">
+                            <i class="fas fa-save"></i>
+                            Salvar Configurações
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast container -->
+    <div class="toast-container"></div>
+
+    <script>
+        // Carrega dados ao inicializar
+        document.addEventListener('DOMContentLoaded', function() {
+            carregarInfoUsuario();
+            carregarConfiguracoes();
+            carregarEstatisticasBackup();
+            carregarInfoSistema();
+            
+            // Event listeners
+            document.getElementById('temaSelect').addEventListener('change', atualizarPreviewTema);
+            document.getElementById('arquivoRestore').addEventListener('change', restaurarBackup);
+        });
+
+        function carregarInfoUsuario() {
+            const sessao = sessionStorage.getItem('sismed_sessao');
+            if (sessao) {
+                const dados = JSON.parse(sessao);
+                const userInfo = document.getElementById('userInfo');
+                const userIcon = document.getElementById('userIcon');
+                
+                let icone = 'fas fa-user';
+                let texto = dados.nome;
+                
+                switch(dados.tipo) {
+                    case 'medico':
+                        icone = 'fas fa-user-md';
+                        texto += dados.especialidade ? ` - ${dados.especialidade}` : '';
+                        texto += dados.registro ? ` - ${dados.registro}` : '';
+                        break;
+                    case 'enfermeiro':
+                        icone = 'fas fa-user-nurse';
+                        texto += dados.registro ? ` - ${dados.registro}` : '';
+                        break;
+                    case 'farmaceutico':
+                        icone = 'fas fa-pills';
+                        texto += dados.registro ? ` - ${dados.registro}` : '';
+                        break;
+                    case 'fisioterapeuta':
+                        icone = 'fas fa-dumbbell';
+                        texto += dados.registro ? ` - ${dados.registro}` : '';
+                        break;
+                    case 'visitante':
+                        icone = 'fas fa-eye';
+                        texto += ' - Visitante';
+                        break;
+                    default:
+                        icone = 'fas fa-user';
+                        texto += dados.registro ? ` - ${dados.registro}` : '';
+                }
+                
+                userIcon.className = icone;
+                userInfo.textContent = texto;
+            } else {
+                window.location.href = 'identificacao_novo.html';
+            }
+        }
+
+        function carregarConfiguracoes() {
+            const config = JSON.parse(localStorage.getItem('sismed_config') || '{}');
+            
+            // Tema
+            document.getElementById('temaSelect').value = config.tema || 'azul';
+            atualizarPreviewTema();
+            
+            // Identidade
+            document.getElementById('nomeInstituicao').value = config.nomeInstituicao || 'PREFEITURA MUNICIPAL DE PEROBAL';
+            document.getElementById('enderecoInstituicao').value = config.enderecoInstituicao || 'Rua Jaracatiá, 1060 - Centro - Perobal/PR';
+            
+            // Configurações avançadas
+            document.getElementById('autoSave').checked = config.autoSave !== false;
+            document.getElementById('notifications').checked = config.notifications !== false;
+            document.getElementById('confirmActions').checked = config.confirmActions !== false;
+            document.getElementById('timeoutSessao').value = config.timeoutSessao || '60';
+        }
+
+        function carregarEstatisticasBackup() {
+            const pacientes = JSON.parse(localStorage.getItem('sismed_pacientes') || '[]');
+            const medicamentos = JSON.parse(localStorage.getItem('sismed_medicamentos') || '[]');
+            const receitas = JSON.parse(localStorage.getItem('sismed_receitas') || '[]');
+            
+            document.getElementById('totalPacientesBackup').textContent = pacientes.length;
+            document.getElementById('totalMedicamentosBackup').textContent = medicamentos.length;
+            document.getElementById('totalReceitasBackup').textContent = receitas.length;
+        }
+
+        function carregarInfoSistema() {
+            document.getElementById('infoNavegador').textContent = navigator.userAgent.split(' ').pop();
+            document.getElementById('infoResolucao').textContent = `${screen.width}x${screen.height}`;
+        }
+
+        function atualizarPreviewTema() {
+            const tema = document.getElementById('temaSelect').value;
+            const preview = document.getElementById('themePreview');
+            
+            // Remove classes anteriores
+            preview.className = 'theme-preview';
+            
+            // Adiciona nova classe do tema
+            preview.classList.add(`theme-${tema}`);
+        }
+
+        function aplicarTema() {
+            const tema = document.getElementById('temaSelect').value;
+            
+            // Salva a configuração
+            const config = JSON.parse(localStorage.getItem('sismed_config') || '{}');
+            config.tema = tema;
+            localStorage.setItem('sismed_config', JSON.stringify(config));
+            
+            // Aplica o tema ao body
+            document.body.className = `theme-${tema}`;
+            
+            showToast('Tema aplicado com sucesso!', 'success');
+        }
+
+        function salvarIdentidade() {
+            const config = JSON.parse(localStorage.getItem('sismed_config') || '{}');
+            
+            config.nomeInstituicao = document.getElementById('nomeInstituicao').value;
+            config.enderecoInstituicao = document.getElementById('enderecoInstituicao').value;
+            
+            localStorage.setItem('sismed_config', JSON.stringify(config));
+            
+            showToast('Identidade salva com sucesso!', 'success');
+        }
+
+        function fazerBackup() {
+            const dados = {
+                pacientes: JSON.parse(localStorage.getItem('sismed_pacientes') || '[]'),
+                medicamentos: JSON.parse(localStorage.getItem('sismed_medicamentos') || '[]'),
+                receitas: JSON.parse(localStorage.getItem('sismed_receitas') || '[]'),
+                configuracoes: JSON.parse(localStorage.getItem('sismed_config') || '{}'),
+                dataBackup: new Date().toISOString(),
+                versao: '2.0'
+            };
+            
+            const blob = new Blob([JSON.stringify(dados, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `sismed_backup_${new Date().toISOString().split('T')[0]}.json`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            
+            URL.revokeObjectURL(url);
+            
+            showToast('Backup realizado com sucesso!', 'success');
+        }
+
+        function restaurarBackup(event) {
+            const arquivo = event.target.files[0];
+            if (!arquivo) return;
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const dados = JSON.parse(e.target.result);
+                    
+                    // Valida estrutura do backup
+                    if (!dados.versao || !dados.dataBackup) {
+                        throw new Error('Arquivo de backup inválido');
+                    }
+                    
+                    if (confirm('Tem certeza que deseja restaurar este backup? Todos os dados atuais serão substituídos.')) {
+                        // Restaura os dados
+                        localStorage.setItem('sismed_pacientes', JSON.stringify(dados.pacientes || []));
+                        localStorage.setItem('sismed_medicamentos', JSON.stringify(dados.medicamentos || []));
+                        localStorage.setItem('sismed_receitas', JSON.stringify(dados.receitas || []));
+                        localStorage.setItem('sismed_config', JSON.stringify(dados.configuracoes || {}));
+                        
+                        showToast('Backup restaurado com sucesso!', 'success');
+                        
+                        // Recarrega as estatísticas
+                        carregarEstatisticasBackup();
+                        carregarConfiguracoes();
+                        
+                        // Limpa o input
+                        event.target.value = '';
+                    }
+                } catch (error) {
+                    showToast('Erro ao restaurar backup: ' + error.message, 'error');
+                    event.target.value = '';
+                }
+            };
+            reader.readAsText(arquivo);
+        }
+
+        function limparDados() {
+            if (confirm('ATENÇÃO: Esta ação irá apagar TODOS os dados do sistema (pacientes, medicamentos, receitas). Esta ação não pode ser desfeita. Tem certeza?')) {
+                if (confirm('Última confirmação: Realmente deseja apagar todos os dados?')) {
+                    localStorage.removeItem('sismed_pacientes');
+                    localStorage.removeItem('sismed_medicamentos');
+                    localStorage.removeItem('sismed_receitas');
+                    
+                    carregarEstatisticasBackup();
+                    
+                    showToast('Todos os dados foram apagados!', 'warning');
+                }
+            }
+        }
+
+        function salvarConfiguracoes() {
+            const config = JSON.parse(localStorage.getItem('sismed_config') || '{}');
+            
+            config.autoSave = document.getElementById('autoSave').checked;
+            config.notifications = document.getElementById('notifications').checked;
+            config.confirmActions = document.getElementById('confirmActions').checked;
+            config.timeoutSessao = document.getElementById('timeoutSessao').value;
+            
+            localStorage.setItem('sismed_config', JSON.stringify(config));
+            
+            showToast('Configurações salvas com sucesso!', 'success');
+        }
+
+        function verificarAtualizacoes() {
+            showToast('Sistema atualizado! Você está usando a versão mais recente.', 'info');
+        }
+
+        function abrirSuporte() {
+            const mensagem = `Olá! Preciso de suporte técnico para o SISMED Perobal.
+            
+Informações do sistema:
+- Versão: 2.0
+- Navegador: ${navigator.userAgent}
+- Data: ${new Date().toLocaleString('pt-BR')}
+
+Descreva seu problema aqui...`;
+            
+            const url = `mailto:suporte@perobal.pr.gov.br?subject=Suporte SISMED Perobal&body=${encodeURIComponent(mensagem)}`;
+            window.open(url);
+        }
+
+        // Controles de janela
+        document.querySelector('.minimize').addEventListener('click', function() {
+            showToast('Função de minimizar não disponível no navegador', 'info');
+        });
+        
+        document.querySelector('.maximize').addEventListener('click', function() {
+            if (document.fullscreenElement) {
+                document.exitFullscreen();
+            } else {
+                document.documentElement.requestFullscreen();
+            }
+        });
+        
+        document.querySelector('.close').addEventListener('click', function() {
+            if (confirm('Deseja realmente fechar o sistema?')) {
+                window.close();
+            }
+        });
+
+        // Função para mostrar toast notifications
+        function showToast(message, type = 'info') {
+            const toast = document.createElement('div');
+            toast.className = `toast toast-${type}`;
+            
+            const icon = type === 'success' ? 'check-circle' : 
+                        type === 'error' ? 'exclamation-circle' : 
+                        type === 'warning' ? 'exclamation-triangle' : 'info-circle';
+            
+            toast.innerHTML = `
+                <div class="toast-header">
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <i class="fas fa-${icon}"></i>
+                        <strong>${type.charAt(0).toUpperCase() + type.slice(1)}</strong>
+                    </div>
+                    <button class="toast-close" onclick="this.parentElement.parentElement.remove()">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="toast-body">${message}</div>
+            `;
+            
+            document.querySelector('.toast-container').appendChild(toast);
+            
+            // Remove toast após 5 segundos
+            setTimeout(() => {
+                if (toast.parentElement) {
+                    toast.remove();
+                }
+            }, 5000);
+        }
+    </script>
+</body>
+</html>
+

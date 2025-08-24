@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pacientes - SISMED Perobal</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style_novo.css">
+</head>
+<body>
+    <!-- Barra de título no estilo Windows -->
+    <div class="title-bar">
+        <div class="logo">
+            <i class="fas fa-hospital"></i>
+            <h1>SISMED Perobal - Pacientes</h1>
+        </div>
+        <div class="window-controls">
+            <button class="minimize"><i class="fas fa-minus"></i></button>
+            <button class="maximize"><i class="far fa-square"></i></button>
+            <button class="close"><i class="fas fa-times"></i></button>
+        </div>
+    </div>
+
+    <!-- Container principal -->
+    <div class="main-container">
+        <!-- Sidebar de navegação -->
+        <div class="sidebar">
+            <div class="user-info">
+                <i class="fas fa-user-md" id="userIcon"></i>
+                <span id="userInfo">Usuário não identificado</span>
+            </div>
+            
+            <div class="nav-menu">
+                <a href="index_novo.html" class="nav-item">
+                    <i class="fas fa-home"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="pacientes_novo.html" class="nav-item active">
+                    <i class="fas fa-user-injured"></i>
+                    <span>Pacientes</span>
+                </a>
+                <a href="medicamentos_novo.html" class="nav-item">
+                    <i class="fas fa-pills"></i>
+                    <span>Medicamentos</span>
+                </a>
+                <a href="receitas_novo.html" class="nav-item">
+                    <i class="fas fa-file-prescription"></i>
+                    <span>Receitas</span>
+                </a>
+                <a href="configuracoes_novo.html" class="nav-item">
+                    <i class="fas fa-cog"></i>
+                    <span>Configurações</span>
+                </a>
+            </div>
+            
+            <a href="identificacao_novo.html" class="nav-item">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>Sair</span>
+            </a>
+        </div>
+
+        <!-- Conteúdo principal -->
+        <div class="content">
+            <div class="content-header">
+                <h2>Gerenciamento de Pacientes</h2>
+                <p>Cadastre e gerencie os pacientes do sistema</p>
+            </div>
+
+            <!-- Seção de busca e cadastro -->
+            <div class="card mb-3">
+                <div class="card-header">
+                    <h3>Buscar Pacientes</h3>
+                </div>
+                <div class="card-body">
+                    <div class="search-container">
+                        <input type="text" id="searchInput" class="search-input" placeholder="Buscar por nome ou CNS...">
+                        <button class="btn btn-primary" onclick="buscarPacientes()">
+                            <i class="fas fa-search"></i>
+                            Buscar
+                        </button>
+                        <button class="btn btn-success" onclick="abrirModalCadastro()">
+                            <i class="fas fa-plus"></i>
+                            Novo Paciente
+                        </button>
+                    </div>
+                    <div id="resultadoBusca" class="mt-2" style="display: none;">
+                        <small class="text-gray">
+                            <i class="fas fa-info-circle"></i>
+                            <span id="mensagemBusca"></span>
+                        </small>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Lista de pacientes -->
+            <div class="table-container">
+                <div class="table-header">
+                    <h3>Pacientes Cadastrados</h3>
+                    <div class="table-actions">
+                        <span class="text-gray">Total: <strong id="totalPacientes">0</strong> pacientes</span>
+                    </div>
+                </div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Nome</th>
+                            <th>Data Nasc.</th>
+                            <th>CNS</th>
+                            <th>Telefone</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="listaPacientes">
+                        <tr>
+                            <td colspan="5" class="text-center text-gray">
+                                <i class="fas fa-info-circle"></i>
+                                Nenhum paciente cadastrado ainda
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de cadastro/edição -->
+    <div class="modal" id="modalPaciente">
+        <div class="modal-dialog">
+            <div class="modal-header">
+                <h3 id="modalTitle">Novo Paciente</h3>
+                <button class="modal-close" onclick="fecharModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="formPaciente">
+                    <input type="hidden" id="pacienteId">
+                    
+                    <div class="form-group">
+                        <label for="nome">Nome Completo *</label>
+                        <input type="text" id="nome" class="form-control" required>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-col">
+                            <label for="dataNascimento">Data de Nascimento *</label>
+                            <input type="date" id="dataNascimento" class="form-control" required>
+                        </div>
+                        <div class="form-col">
+                            <label for="cns">CNS (Cartão Nacional de Saúde) *</label>
+                            <input type="text" id="cns" class="form-control" required maxlength="15">
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-col">
+                            <label for="telefone">Telefone</label>
+                            <input type="tel" id="telefone" class="form-control">
+                        </div>
+                        <div class="form-col">
+                            <label for="email">E-mail</label>
+                            <input type="email" id="email" class="form-control">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="endereco">Endereço</label>
+                        <input type="text" id="endereco" class="form-control">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="observacoes">Observações</label>
+                        <textarea id="observacoes" class="form-control" rows="3"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn" onclick="fecharModal()">Cancelar</button>
+                <button class="btn btn-primary" onclick="salvarPaciente()">
+                    <i class="fas fa-save"></i>
+                    Salvar
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast container -->
+    <div class="toast-container"></div>
+
+    <script>
+        let pacientes = [];
+        let pacienteEditando = null;
+
+        // Carrega dados ao inicializar
+        document.addEventListener('DOMContentLoaded', function() {
+            carregarInfoUsuario();
+            carregarPacientes();
+            
+            // Verifica se deve editar um paciente específico
+            const urlParams = new URLSearchParams(window.location.search);
+            const editarId = urlParams.get('editar');
+            if (editarId) {
+                editarPaciente(editarId);
+            }
+        });
+
+        function carregarInfoUsuario() {
+            const sessao = sessionStorage.getItem('sismed_sessao');
+            if (sessao) {
+                const dados = JSON.parse(sessao);
+                const userInfo = document.getElementById('userInfo');
+                const userIcon = document.getElementById('userIcon');
+                
+                let icone = 'fas fa-user';
+                let texto = dados.nome;
+                
+                switch(dados.tipo) {
+                    case 'medico':
+                        icone = 'fas fa-user-md';
+                        texto += dados.especialidade ? ` - ${dados.especialidade}` : '';
+                        texto += dados.registro ? ` - ${dados.registro}` : '';
+                        break;
+                    case 'enfermeiro':
+                        icone = 'fas fa-user-nurse';
+                        texto += dados.registro ? ` - ${dados.registro}` : '';
+                        break;
+                    case 'farmaceutico':
+                        icone = 'fas fa-pills';
+                        texto += dados.registro ? ` - ${dados.registro}` : '';
+                        break;
+                    case 'fisioterapeuta':
+                        icone = 'fas fa-dumbbell';
+                        texto += dados.registro ? ` - ${dados.registro}` : '';
+                        break;
+                    case 'visitante':
+                        icone = 'fas fa-eye';
+                        texto += ' - Visitante';
+                        break;
+                    default:
+                        icone = 'fas fa-user';
+                        texto += dados.registro ? ` - ${dados.registro}` : '';
+                }
+                
+                userIcon.className = icone;
+                userInfo.textContent = texto;
+            } else {
+                window.location.href = 'identificacao_novo.html';
+            }
+        }
+
+        function carregarPacientes() {
+            pacientes = JSON.parse(localStorage.getItem('sismed_pacientes') || '[]');
+            renderizarListaPacientes(pacientes);
+            document.getElementById('totalPacientes').textContent = pacientes.length;
+        }
+
+        function renderizarListaPacientes(lista) {
+            const tbody = document.getElementById('listaPacientes');
+            
+            if (lista.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="5" class="text-center text-gray">
+                            <i class="fas fa-info-circle"></i>
+                            Nenhum paciente encontrado
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+            
+            tbody.innerHTML = lista.map(paciente => `
+                <tr>
+                    <td>${paciente.nome}</td>
+                    <td>${formatarData(paciente.dataNascimento)}</td>
+                    <td>${paciente.cns}</td>
+                    <td>${paciente.telefone || '-'}</td>
+                    <td class="action-buttons">
+                        <button class="action-btn" title="Gerar Receita" onclick="gerarReceita('${paciente.id}')">
+                            <i class="fas fa-file-prescription"></i>
+                        </button>
+                        <button class="action-btn" title="Editar" onclick="editarPaciente('${paciente.id}')">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="action-btn" title="Excluir" onclick="excluirPaciente('${paciente.id}')">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function buscarPacientes() {
+            const termo = document.getElementById('searchInput').value.toLowerCase().trim();
+            const resultadoBusca = document.getElementById('resultadoBusca');
+            const mensagemBusca = document.getElementById('mensagemBusca');
+            
+            if (!termo) {
+                renderizarListaPacientes(pacientes);
+                resultadoBusca.style.display = 'none';
+                return;
+            }
+            
+            const resultados = pacientes.filter(paciente => 
+                paciente.nome.toLowerCase().includes(termo) ||
+                paciente.cns.includes(termo)
+            );
+            
+            renderizarListaPacientes(resultados);
+            
+            if (resultados.length === 0) {
+                mensagemBusca.innerHTML = `Nenhum paciente encontrado para "${termo}". <button class="btn btn-success btn-sm" onclick="abrirModalCadastro('${termo}')">Cadastrar novo paciente</button>`;
+            } else {
+                mensagemBusca.textContent = `${resultados.length} paciente(s) encontrado(s) para "${termo}"`;
+            }
+            
+            resultadoBusca.style.display = 'block';
+        }
+
+        function abrirModalCadastro(nomeInicial = '') {
+            pacienteEditando = null;
+            document.getElementById('modalTitle').textContent = 'Novo Paciente';
+            document.getElementById('formPaciente').reset();
+            document.getElementById('pacienteId').value = '';
+            
+            if (nomeInicial) {
+                document.getElementById('nome').value = nomeInicial;
+            }
+            
+            document.getElementById('modalPaciente').classList.add('show');
+        }
+
+        function editarPaciente(id) {
+            const paciente = pacientes.find(p => p.id === id);
+            if (!paciente) return;
+            
+            pacienteEditando = paciente;
+            document.getElementById('modalTitle').textContent = 'Editar Paciente';
+            
+            document.getElementById('pacienteId').value = paciente.id;
+            document.getElementById('nome').value = paciente.nome;
+            document.getElementById('dataNascimento').value = paciente.dataNascimento;
+            document.getElementById('cns').value = paciente.cns;
+            document.getElementById('telefone').value = paciente.telefone || '';
+            document.getElementById('email').value = paciente.email || '';
+            document.getElementById('endereco').value = paciente.endereco || '';
+            document.getElementById('observacoes').value = paciente.observacoes || '';
+            
+            document.getElementById('modalPaciente').classList.add('show');
+        }
+
+        function salvarPaciente() {
+            const form = document.getElementById('formPaciente');
+            if (!form.checkValidity()) {
+                form.reportValidity();
+                return;
+            }
+            
+            const dados = {
+                id: document.getElementById('pacienteId').value || gerarId(),
+                nome: document.getElementById('nome').value,
+                dataNascimento: document.getElementById('dataNascimento').value,
+                cns: document.getElementById('cns').value,
+                telefone: document.getElementById('telefone').value,
+                email: document.getElementById('email').value,
+                endereco: document.getElementById('endereco').value,
+                observacoes: document.getElementById('observacoes').value,
+                dataCadastro: pacienteEditando ? pacienteEditando.dataCadastro : new Date().toISOString()
+            };
+            
+            // Verifica se CNS já existe (exceto para o próprio paciente em edição)
+            const cnsExistente = pacientes.find(p => p.cns === dados.cns && p.id !== dados.id);
+            if (cnsExistente) {
+                showToast('CNS já cadastrado para outro paciente!', 'error');
+                return;
+            }
+            
+            if (pacienteEditando) {
+                // Atualiza paciente existente
+                const index = pacientes.findIndex(p => p.id === dados.id);
+                pacientes[index] = dados;
+                showToast('Paciente atualizado com sucesso!', 'success');
+            } else {
+                // Adiciona novo paciente
+                pacientes.push(dados);
+                showToast('Paciente cadastrado com sucesso!', 'success');
+            }
+            
+            localStorage.setItem('sismed_pacientes', JSON.stringify(pacientes));
+            carregarPacientes();
+            fecharModal();
+        }
+
+        function excluirPaciente(id) {
+            const paciente = pacientes.find(p => p.id === id);
+            if (!paciente) return;
+            
+            if (confirm(`Tem certeza que deseja excluir o paciente "${paciente.nome}"?`)) {
+                pacientes = pacientes.filter(p => p.id !== id);
+                localStorage.setItem('sismed_pacientes', JSON.stringify(pacientes));
+                carregarPacientes();
+                showToast('Paciente excluído com sucesso!', 'success');
+            }
+        }
+
+        function gerarReceita(pacienteId) {
+            window.location.href = `receitas_novo.html?paciente=${pacienteId}`;
+        }
+
+        function fecharModal() {
+            document.getElementById('modalPaciente').classList.remove('show');
+        }
+
+        // Busca em tempo real
+        document.getElementById('searchInput').addEventListener('input', function() {
+            const termo = this.value.toLowerCase().trim();
+            if (termo.length >= 2) {
+                buscarPacientes();
+            } else if (termo.length === 0) {
+                renderizarListaPacientes(pacientes);
+                document.getElementById('resultadoBusca').style.display = 'none';
+            }
+        });
+
+        // Fechar modal clicando fora
+        document.getElementById('modalPaciente').addEventListener('click', function(e) {
+            if (e.target === this) {
+                fecharModal();
+            }
+        });
+
+        // Controles de janela
+        document.querySelector('.minimize').addEventListener('click', function() {
+            showToast('Função de minimizar não disponível no navegador', 'info');
+        });
+        
+        document.querySelector('.maximize').addEventListener('click', function() {
+            if (document.fullscreenElement) {
+                document.exitFullscreen();
+            } else {
+                document.documentElement.requestFullscreen();
+            }
+        });
+        
+        document.querySelector('.close').addEventListener('click', function() {
+            if (confirm('Deseja realmente fechar o sistema?')) {
+                window.close();
+            }
+        });
+
+        // Funções utilitárias
+        function formatarData(data) {
+            return new Date(data).toLocaleDateString('pt-BR');
+        }
+
+        function gerarId() {
+            return Date.now().toString(36) + Math.random().toString(36).substr(2);
+        }
+
+        // Função para mostrar toast notifications
+        function showToast(message, type = 'info') {
+            const toast = document.createElement('div');
+            toast.className = `toast toast-${type}`;
+            
+            const icon = type === 'success' ? 'check-circle' : 
+                        type === 'error' ? 'exclamation-circle' : 
+                        type === 'warning' ? 'exclamation-triangle' : 'info-circle';
+            
+            toast.innerHTML = `
+                <div class="toast-header">
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <i class="fas fa-${icon}"></i>
+                        <strong>${type.charAt(0).toUpperCase() + type.slice(1)}</strong>
+                    </div>
+                    <button class="toast-close" onclick="this.parentElement.parentElement.remove()">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="toast-body">${message}</div>
+            `;
+            
+            document.querySelector('.toast-container').appendChild(toast);
+            
+            // Remove toast após 5 segundos
+            setTimeout(() => {
+                if (toast.parentElement) {
+                    toast.remove();
+                }
+            }, 5000);
+        }
+    </script>
+</body>
+</html>
+

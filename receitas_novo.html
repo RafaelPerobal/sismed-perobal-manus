@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Receitas - SISMED Perobal</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style_novo.css">
+</head>
+<body>
+    <!-- Barra de título no estilo Windows -->
+    <div class="title-bar">
+        <div class="logo">
+            <i class="fas fa-hospital"></i>
+            <h1>SISMED Perobal - Receitas</h1>
+        </div>
+        <div class="window-controls">
+            <button class="minimize"><i class="fas fa-minus"></i></button>
+            <button class="maximize"><i class="far fa-square"></i></button>
+            <button class="close"><i class="fas fa-times"></i></button>
+        </div>
+    </div>
+
+    <!-- Container principal -->
+    <div class="main-container">
+        <!-- Sidebar de navegação -->
+        <div class="sidebar">
+            <div class="user-info">
+                <i class="fas fa-user-md" id="userIcon"></i>
+                <span id="userInfo">Usuário não identificado</span>
+            </div>
+            
+            <div class="nav-menu">
+                <a href="index_novo.html" class="nav-item">
+                    <i class="fas fa-home"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="pacientes_novo.html" class="nav-item">
+                    <i class="fas fa-user-injured"></i>
+                    <span>Pacientes</span>
+                </a>
+                <a href="medicamentos_novo.html" class="nav-item">
+                    <i class="fas fa-pills"></i>
+                    <span>Medicamentos</span>
+                </a>
+                <a href="receitas_novo.html" class="nav-item active">
+                    <i class="fas fa-file-prescription"></i>
+                    <span>Receitas</span>
+                </a>
+                <a href="configuracoes_novo.html" class="nav-item">
+                    <i class="fas fa-cog"></i>
+                    <span>Configurações</span>
+                </a>
+            </div>
+            
+            <a href="identificacao_novo.html" class="nav-item">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>Sair</span>
+            </a>
+        </div>
+
+        <!-- Conteúdo principal -->
+        <div class="content">
+            <div class="content-header">
+                <h2>Emitir Receita Médica</h2>
+                <p>Selecione o paciente e configure a receita. Sempre serão geradas 2 vias (farmácia e paciente).</p>
+            </div>
+
+            <!-- Formulário de receita -->
+            <div class="receita-form">
+                <div class="card-header">
+                    <h3>Dados da Receita</h3>
+                </div>
+                <div class="card-body">
+                    <div class="form-row">
+                        <div class="form-col">
+                            <label for="pacienteSelect">Paciente *</label>
+                            <select id="pacienteSelect" class="form-control" required>
+                                <option value="">Selecione um paciente...</option>
+                            </select>
+                        </div>
+                        <div class="form-col">
+                            <label for="quantidadeMeses">Quantidade de meses (1 a 6) *</label>
+                            <select id="quantidadeMeses" class="form-control" required>
+                                <option value="1">1 mês</option>
+                                <option value="2">2 meses</option>
+                                <option value="3">3 meses</option>
+                                <option value="4">4 meses</option>
+                                <option value="5">5 meses</option>
+                                <option value="6">6 meses</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Lista de medicamentos -->
+            <div class="receita-section">
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Lista de Medicamentos</h3>
+                        <div class="search-container" style="max-width: 300px;">
+                            <input type="text" id="searchMedicamentos" class="search-input" placeholder="Buscar medicamentos...">
+                            <button class="btn btn-primary" onclick="buscarMedicamentos()">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="medicamentos-list" id="listaMedicamentosReceita">
+                            <div class="text-center text-gray p-3">
+                                <i class="fas fa-info-circle"></i>
+                                Carregando medicamentos...
+                            </div>
+                        </div>
+                        <div class="mt-3">
+                            <button class="btn btn-success" onclick="adicionarMedicamentosSelecionados()">
+                                <i class="fas fa-plus"></i>
+                                Adicionar Selecionados
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Posologia e Observações -->
+            <div class="posologia-section" id="posologiaSection" style="display: none;">
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Posologia e Observações</h3>
+                    </div>
+                    <div class="card-body">
+                        <div id="medicamentosSelecionados">
+                            <!-- Medicamentos selecionados aparecerão aqui -->
+                        </div>
+                        
+                        <div class="form-group mt-3">
+                            <label for="observacoesGerais">Observações gerais (opcional)</label>
+                            <textarea id="observacoesGerais" class="form-control" rows="3" placeholder="Observações adicionais para a receita..."></textarea>
+                        </div>
+                        
+                        <div class="d-flex gap-2 mt-3">
+                            <button class="btn" onclick="voltarSelecaoMedicamentos()">
+                                <i class="fas fa-arrow-left"></i>
+                                Voltar
+                            </button>
+                            <button class="btn btn-primary" onclick="gerarReceita()">
+                                <i class="fas fa-print"></i>
+                                Gerar e Imprimir
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Histórico de receitas -->
+            <div class="table-container">
+                <div class="table-header">
+                    <h3>Receitas Geradas na Sessão</h3>
+                    <div class="table-actions">
+                        <span class="text-gray">Total: <strong id="totalReceitas">0</strong> receitas</span>
+                    </div>
+                </div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Paciente</th>
+                            <th>Data/Hora</th>
+                            <th>Medicamentos</th>
+                            <th>Período</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="historicoReceitas">
+                        <tr>
+                            <td colspan="5" class="text-center text-gray">
+                                <i class="fas fa-info-circle"></i>
+                                Nenhuma receita gerada nesta sessão
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast container -->
+    <div class="toast-container"></div>
+
+    <script>
+        let pacientes = [];
+        let medicamentos = [];
+        let medicamentosSelecionados = [];
+        let receitas = [];
+        let usuarioLogado = null;
+
+        // Carrega dados ao inicializar
+        document.addEventListener('DOMContentLoaded', function() {
+            carregarInfoUsuario();
+            carregarPacientes();
+            carregarMedicamentos();
+            carregarReceitas();
+            
+            // Verifica se deve pré-selecionar um paciente
+            const urlParams = new URLSearchParams(window.location.search);
+            const pacienteId = urlParams.get('paciente');
+            if (pacienteId) {
+                document.getElementById('pacienteSelect').value = pacienteId;
+            }
+        });
+
+        function carregarInfoUsuario() {
+            const sessao = sessionStorage.getItem('sismed_sessao');
+            if (sessao) {
+                usuarioLogado = JSON.parse(sessao);
+                const userInfo = document.getElementById('userInfo');
+                const userIcon = document.getElementById('userIcon');
+                
+                let icone = 'fas fa-user';
+                let texto = usuarioLogado.nome;
+                
+                switch(usuarioLogado.tipo) {
+                    case 'medico':
+                        icone = 'fas fa-user-md';
+                        texto += usuarioLogado.especialidade ? ` - ${usuarioLogado.especialidade}` : '';
+                        texto += usuarioLogado.registro ? ` - ${usuarioLogado.registro}` : '';
+                        break;
+                    case 'enfermeiro':
+                        icone = 'fas fa-user-nurse';
+                        texto += usuarioLogado.registro ? ` - ${usuarioLogado.registro}` : '';
+                        break;
+                    case 'farmaceutico':
+                        icone = 'fas fa-pills';
+                        texto += usuarioLogado.registro ? ` - ${usuarioLogado.registro}` : '';
+                        break;
+                    case 'fisioterapeuta':
+                        icone = 'fas fa-dumbbell';
+                        texto += usuarioLogado.registro ? ` - ${usuarioLogado.registro}` : '';
+                        break;
+                    case 'visitante':
+                        icone = 'fas fa-eye';
+                        texto += ' - Visitante';
+                        break;
+                    default:
+                        icone = 'fas fa-user';
+                        texto += usuarioLogado.registro ? ` - ${usuarioLogado.registro}` : '';
+                }
+                
+                userIcon.className = icone;
+                userInfo.textContent = texto;
+            } else {
+                window.location.href = 'identificacao_novo.html';
+            }
+        }
+
+        function carregarPacientes() {
+            pacientes = JSON.parse(localStorage.getItem('sismed_pacientes') || '[]');
+            const select = document.getElementById('pacienteSelect');
+            
+            select.innerHTML = '<option value="">Selecione um paciente...</option>';
+            
+            pacientes.forEach(paciente => {
+                const option = document.createElement('option');
+                option.value = paciente.id;
+                option.textContent = `${paciente.nome} - CNS: ${paciente.cns}`;
+                select.appendChild(option);
+            });
+        }
+
+        function carregarMedicamentos() {
+            medicamentos = JSON.parse(localStorage.getItem('sismed_medicamentos') || '[]');
+            renderizarListaMedicamentos(medicamentos);
+        }
+
+        function carregarReceitas() {
+            receitas = JSON.parse(localStorage.getItem('sismed_receitas') || '[]');
+            renderizarHistoricoReceitas();
+        }
+
+        function renderizarListaMedicamentos(lista) {
+            const container = document.getElementById('listaMedicamentosReceita');
+            
+            if (lista.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center text-gray p-3">
+                        <i class="fas fa-info-circle"></i>
+                        Nenhum medicamento cadastrado. <a href="medicamentos_novo.html">Cadastrar medicamentos</a>
+                    </div>
+                `;
+                return;
+            }
+            
+            container.innerHTML = lista.map(medicamento => `
+                <div class="medicamento-item ${medicamento.tipo === 'controlado' ? 'medicamento-controlado' : ''}">
+                    <input type="checkbox" class="medicamento-checkbox" value="${medicamento.id}" id="med_${medicamento.id}">
+                    <label for="med_${medicamento.id}" class="flex-1">
+                        <strong>${medicamento.nome}</strong> ${medicamento.dosagem} - ${medicamento.apresentacao}
+                        ${medicamento.tipo === 'controlado' ? '<span class="badge badge-warning ml-1">Controlado</span>' : '<span class="badge badge-success ml-1">Comum</span>'}
+                        ${medicamento.posologiaPadrao ? `<br><small class="text-gray">Posologia padrão: ${medicamento.posologiaPadrao}</small>` : ''}
+                    </label>
+                </div>
+            `).join('');
+        }
+
+        function buscarMedicamentos() {
+            const termo = document.getElementById('searchMedicamentos').value.toLowerCase().trim();
+            
+            if (!termo) {
+                renderizarListaMedicamentos(medicamentos);
+                return;
+            }
+            
+            const resultados = medicamentos.filter(medicamento => 
+                medicamento.nome.toLowerCase().includes(termo) ||
+                medicamento.dosagem.toLowerCase().includes(termo) ||
+                medicamento.apresentacao.toLowerCase().includes(termo)
+            );
+            
+            renderizarListaMedicamentos(resultados);
+        }
+
+        function adicionarMedicamentosSelecionados() {
+            const checkboxes = document.querySelectorAll('.medicamento-checkbox:checked');
+            
+            if (checkboxes.length === 0) {
+                showToast('Selecione pelo menos um medicamento', 'warning');
+                return;
+            }
+            
+            medicamentosSelecionados = [];
+            
+            checkboxes.forEach(checkbox => {
+                const medicamento = medicamentos.find(m => m.id === checkbox.value);
+                if (medicamento) {
+                    medicamentosSelecionados.push({
+                        ...medicamento,
+                        posologia: medicamento.posologiaPadrao || ''
+                    });
+                }
+            });
+            
+            mostrarSecaoPosologia();
+        }
+
+        function mostrarSecaoPosologia() {
+            document.getElementById('posologiaSection').style.display = 'block';
+            
+            const container = document.getElementById('medicamentosSelecionados');
+            container.innerHTML = medicamentosSelecionados.map((medicamento, index) => `
+                <div class="posologia-item">
+                    <div class="flex-1">
+                        <strong>${medicamento.nome}</strong> ${medicamento.dosagem} - ${medicamento.apresentacao}
+                        ${medicamento.tipo === 'controlado' ? '<span class="badge badge-warning ml-1">Controlado</span>' : ''}
+                    </div>
+                    <div class="flex-1">
+                        <label for="posologia_${index}">Posologia ${medicamento.tipo === 'controlado' ? '*' : ''}</label>
+                        <input type="text" 
+                               id="posologia_${index}" 
+                               class="form-control" 
+                               value="${medicamento.posologia}" 
+                               placeholder="Ex: 1 comprimido de 8 em 8 horas"
+                               ${medicamento.tipo === 'controlado' ? 'required' : ''}
+                               onchange="atualizarPosologia(${index}, this.value)">
+                    </div>
+                    <button class="btn btn-danger btn-sm" onclick="removerMedicamento(${index})">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
+            `).join('');
+            
+            // Scroll para a seção
+            document.getElementById('posologiaSection').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function atualizarPosologia(index, valor) {
+            medicamentosSelecionados[index].posologia = valor;
+        }
+
+        function removerMedicamento(index) {
+            medicamentosSelecionados.splice(index, 1);
+            
+            if (medicamentosSelecionados.length === 0) {
+                voltarSelecaoMedicamentos();
+            } else {
+                mostrarSecaoPosologia();
+            }
+        }
+
+        function voltarSelecaoMedicamentos() {
+            document.getElementById('posologiaSection').style.display = 'none';
+            
+            // Desmarca todos os checkboxes
+            document.querySelectorAll('.medicamento-checkbox').forEach(checkbox => {
+                checkbox.checked = false;
+            });
+            
+            medicamentosSelecionados = [];
+        }
+
+        function gerarReceita() {
+            // Validações
+            const pacienteId = document.getElementById('pacienteSelect').value;
+            const quantidadeMeses = parseInt(document.getElementById('quantidadeMeses').value);
+            const observacoes = document.getElementById('observacoesGerais').value;
+            
+            if (!pacienteId) {
+                showToast('Selecione um paciente', 'error');
+                return;
+            }
+            
+            if (medicamentosSelecionados.length === 0) {
+                showToast('Selecione pelo menos um medicamento', 'error');
+                return;
+            }
+            
+            // Valida posologia obrigatória para medicamentos controlados
+            const medicamentosControlados = medicamentosSelecionados.filter(m => m.tipo === 'controlado');
+            const posologiasFaltando = medicamentosControlados.filter(m => !m.posologia.trim());
+            
+            if (posologiasFaltando.length > 0) {
+                showToast('Posologia é obrigatória para medicamentos controlados', 'error');
+                return;
+            }
+            
+            const paciente = pacientes.find(p => p.id === pacienteId);
+            
+            // Gera as receitas (uma para cada mês)
+            const receitasGeradas = [];
+            const dataBase = new Date();
+            
+            for (let mes = 0; mes < quantidadeMeses; mes++) {
+                const dataEmissao = new Date(dataBase);
+                dataEmissao.setMonth(dataEmissao.getMonth() + mes);
+                
+                const receita = {
+                    id: gerarId(),
+                    pacienteId: paciente.id,
+                    pacienteNome: paciente.nome,
+                    pacienteCns: paciente.cns,
+                    pacienteDataNasc: paciente.dataNascimento,
+                    medicamentos: medicamentosSelecionados.map(m => ({
+                        nome: m.nome,
+                        dosagem: m.dosagem,
+                        apresentacao: m.apresentacao,
+                        tipo: m.tipo,
+                        posologia: m.posologia
+                    })),
+                    observacoes: observacoes,
+                    dataEmissao: dataEmissao.toISOString(),
+                    periodo: quantidadeMeses,
+                    mesAtual: mes + 1,
+                    medico: {
+                        nome: usuarioLogado.nome,
+                        registro: usuarioLogado.registro || '',
+                        especialidade: usuarioLogado.especialidade || '',
+                        tipo: usuarioLogado.tipo
+                    }
+                };
+                
+                receitasGeradas.push(receita);
+            }
+            
+            // Salva as receitas
+            receitas.push(...receitasGeradas);
+            localStorage.setItem('sismed_receitas', JSON.stringify(receitas));
+            
+            // Gera o PDF e abre para impressão
+            gerarPDFReceitas(receitasGeradas);
+            
+            // Atualiza a interface
+            renderizarHistoricoReceitas();
+            limparFormulario();
+            
+            showToast(`${quantidadeMeses} receita(s) gerada(s) com sucesso!`, 'success');
+        }
+
+        function gerarPDFReceitas(receitasGeradas) {
+            // Aqui seria implementada a geração real do PDF
+            // Por enquanto, simula a abertura da janela de impressão
+            
+            const novaJanela = window.open('', '_blank');
+            novaJanela.document.write(`
+                <html>
+                <head>
+                    <title>Receitas Médicas - ${receitasGeradas[0].pacienteNome}</title>
+                    <style>
+                        body { font-family: Arial, sans-serif; margin: 20px; }
+                        .receita { page-break-after: always; border: 1px solid #ccc; padding: 20px; margin-bottom: 20px; }
+                        .cabecalho { text-align: center; border-bottom: 2px solid #333; padding-bottom: 10px; margin-bottom: 20px; }
+                        .dados-paciente { margin-bottom: 20px; }
+                        .medicamentos { margin-bottom: 20px; }
+                        .medicamento { margin-bottom: 10px; padding: 10px; border-left: 3px solid #007bff; }
+                        .assinatura { margin-top: 40px; text-align: center; }
+                        .via { font-weight: bold; color: #007bff; }
+                        @media print { .receita { page-break-after: always; } }
+                    </style>
+                </head>
+                <body>
+            `);
+            
+            receitasGeradas.forEach((receita, index) => {
+                // Via da Farmácia
+                novaJanela.document.write(`
+                    <div class="receita">
+                        <div class="via">1ª VIA - RETENÇÃO NA FARMÁCIA</div>
+                        <div class="cabecalho">
+                            <h2>PREFEITURA MUNICIPAL DE PEROBAL</h2>
+                            <h3>SECRETARIA MUNICIPAL DE SAÚDE</h3>
+                            <p>Rua Jaracatiá, 1060 - Centro - Perobal/PR</p>
+                            <h3>RECEITUÁRIO MÉDICO</h3>
+                        </div>
+                        
+                        <div class="dados-paciente">
+                            <p><strong>Paciente:</strong> ${receita.pacienteNome}</p>
+                            <p><strong>CNS:</strong> ${receita.pacienteCns}</p>
+                            <p><strong>Data de Nascimento:</strong> ${formatarData(receita.pacienteDataNasc)}</p>
+                            <p><strong>Data de Emissão:</strong> ${formatarData(receita.dataEmissao)}</p>
+                        </div>
+                        
+                        <div class="medicamentos">
+                            <h4>Medicamentos Prescritos:</h4>
+                            ${receita.medicamentos.map(med => `
+                                <div class="medicamento">
+                                    <strong>${med.nome}</strong> ${med.dosagem} - ${med.apresentacao}
+                                    ${med.posologia ? `<br>Posologia: ${med.posologia}` : ''}
+                                </div>
+                            `).join('')}
+                        </div>
+                        
+                        ${receita.observacoes ? `<div><strong>Observações:</strong> ${receita.observacoes}</div>` : ''}
+                        
+                        <div class="assinatura">
+                            <div style="border-top: 1px solid #000; width: 300px; margin: 40px auto 10px;">
+                                ${receita.medico.nome}
+                            </div>
+                            <div>${receita.medico.registro}</div>
+                        </div>
+                    </div>
+                `);
+                
+                // Via do Paciente
+                novaJanela.document.write(`
+                    <div class="receita">
+                        <div class="via">2ª VIA - PACIENTE</div>
+                        <div class="cabecalho">
+                            <h2>PREFEITURA MUNICIPAL DE PEROBAL</h2>
+                            <h3>SECRETARIA MUNICIPAL DE SAÚDE</h3>
+                            <p>Rua Jaracatiá, 1060 - Centro - Perobal/PR</p>
+                            <h3>RECEITUÁRIO MÉDICO</h3>
+                        </div>
+                        
+                        <div class="dados-paciente">
+                            <p><strong>Paciente:</strong> ${receita.pacienteNome}</p>
+                            <p><strong>CNS:</strong> ${receita.pacienteCns}</p>
+                            <p><strong>Data de Nascimento:</strong> ${formatarData(receita.pacienteDataNasc)}</p>
+                            <p><strong>Data de Emissão:</strong> ${formatarData(receita.dataEmissao)}</p>
+                        </div>
+                        
+                        <div class="medicamentos">
+                            <h4>Medicamentos Prescritos:</h4>
+                            ${receita.medicamentos.map(med => `
+                                <div class="medicamento">
+                                    <strong>${med.nome}</strong> ${med.dosagem} - ${med.apresentacao}
+                                    ${med.posologia ? `<br>Posologia: ${med.posologia}` : ''}
+                                </div>
+                            `).join('')}
+                        </div>
+                        
+                        ${receita.observacoes ? `<div><strong>Observações:</strong> ${receita.observacoes}</div>` : ''}
+                        
+                        <div class="assinatura">
+                            <div style="border-top: 1px solid #000; width: 300px; margin: 40px auto 10px;">
+                                ${receita.medico.nome}
+                            </div>
+                            <div>${receita.medico.registro}</div>
+                        </div>
+                    </div>
+                `);
+            });
+            
+            novaJanela.document.write('</body></html>');
+            novaJanela.document.close();
+            
+            // Abre a janela de impressão
+            setTimeout(() => {
+                novaJanela.print();
+            }, 500);
+        }
+
+        function renderizarHistoricoReceitas() {
+            const tbody = document.getElementById('historicoReceitas');
+            const receitasSessao = receitas.filter(r => {
+                const dataReceita = new Date(r.dataEmissao);
+                const hoje = new Date();
+                return dataReceita.toDateString() === hoje.toDateString();
+            });
+            
+            document.getElementById('totalReceitas').textContent = receitasSessao.length;
+            
+            if (receitasSessao.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="5" class="text-center text-gray">
+                            <i class="fas fa-info-circle"></i>
+                            Nenhuma receita gerada nesta sessão
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+            
+            // Agrupa receitas por paciente e data
+            const receitasAgrupadas = {};
+            receitasSessao.forEach(receita => {
+                const chave = `${receita.pacienteId}_${receita.dataEmissao.split('T')[0]}`;
+                if (!receitasAgrupadas[chave]) {
+                    receitasAgrupadas[chave] = {
+                        pacienteNome: receita.pacienteNome,
+                        dataEmissao: receita.dataEmissao,
+                        medicamentos: receita.medicamentos,
+                        periodo: receita.periodo,
+                        receitas: []
+                    };
+                }
+                receitasAgrupadas[chave].receitas.push(receita);
+            });
+            
+            tbody.innerHTML = Object.values(receitasAgrupadas).map(grupo => `
+                <tr>
+                    <td>${grupo.pacienteNome}</td>
+                    <td>${formatarDataHora(grupo.dataEmissao)}</td>
+                    <td>${grupo.medicamentos.length} medicamento(s)</td>
+                    <td>${grupo.periodo} mês(es)</td>
+                    <td class="action-buttons">
+                        <button class="action-btn" title="Reimprimir" onclick="reimprimirReceitas('${grupo.receitas[0].id}')">
+                            <i class="fas fa-print"></i>
+                        </button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function reimprimirReceitas(receitaId) {
+            const receita = receitas.find(r => r.id === receitaId);
+            if (!receita) return;
+            
+            // Encontra todas as receitas do mesmo grupo
+            const receitasGrupo = receitas.filter(r => 
+                r.pacienteId === receita.pacienteId && 
+                r.dataEmissao.split('T')[0] === receita.dataEmissao.split('T')[0]
+            );
+            
+            gerarPDFReceitas(receitasGrupo);
+            showToast('Receitas reenviadas para impressão', 'success');
+        }
+
+        function limparFormulario() {
+            document.getElementById('pacienteSelect').value = '';
+            document.getElementById('quantidadeMeses').value = '1';
+            document.getElementById('observacoesGerais').value = '';
+            document.getElementById('searchMedicamentos').value = '';
+            voltarSelecaoMedicamentos();
+            renderizarListaMedicamentos(medicamentos);
+        }
+
+        // Busca em tempo real de medicamentos
+        document.getElementById('searchMedicamentos').addEventListener('input', function() {
+            const termo = this.value.toLowerCase().trim();
+            if (termo.length >= 2) {
+                buscarMedicamentos();
+            } else if (termo.length === 0) {
+                renderizarListaMedicamentos(medicamentos);
+            }
+        });
+
+        // Controles de janela
+        document.querySelector('.minimize').addEventListener('click', function() {
+            showToast('Função de minimizar não disponível no navegador', 'info');
+        });
+        
+        document.querySelector('.maximize').addEventListener('click', function() {
+            if (document.fullscreenElement) {
+                document.exitFullscreen();
+            } else {
+                document.documentElement.requestFullscreen();
+            }
+        });
+        
+        document.querySelector('.close').addEventListener('click', function() {
+            if (confirm('Deseja realmente fechar o sistema?')) {
+                window.close();
+            }
+        });
+
+        // Funções utilitárias
+        function formatarData(data) {
+            return new Date(data).toLocaleDateString('pt-BR');
+        }
+
+        function formatarDataHora(data) {
+            return new Date(data).toLocaleString('pt-BR');
+        }
+
+        function gerarId() {
+            return Date.now().toString(36) + Math.random().toString(36).substr(2);
+        }
+
+        // Função para mostrar toast notifications
+        function showToast(message, type = 'info') {
+            const toast = document.createElement('div');
+            toast.className = `toast toast-${type}`;
+            
+            const icon = type === 'success' ? 'check-circle' : 
+                        type === 'error' ? 'exclamation-circle' : 
+                        type === 'warning' ? 'exclamation-triangle' : 'info-circle';
+            
+            toast.innerHTML = `
+                <div class="toast-header">
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <i class="fas fa-${icon}"></i>
+                        <strong>${type.charAt(0).toUpperCase() + type.slice(1)}</strong>
+                    </div>
+                    <button class="toast-close" onclick="this.parentElement.parentElement.remove()">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="toast-body">${message}</div>
+            `;
+            
+            document.querySelector('.toast-container').appendChild(toast);
+            
+            // Remove toast após 5 segundos
+            setTimeout(() => {
+                if (toast.parentElement) {
+                    toast.remove();
+                }
+            }, 5000);
+        }
+    </script>
+</body>
+</html>
+

@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SISMED Perobal - Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style_novo.css">
+</head>
+<body>
+    <!-- Barra de título no estilo Windows -->
+    <div class="title-bar">
+        <div class="logo">
+            <i class="fas fa-hospital"></i>
+            <h1>SISMED Perobal</h1>
+        </div>
+        <div class="window-controls">
+            <button class="minimize"><i class="fas fa-minus"></i></button>
+            <button class="maximize"><i class="far fa-square"></i></button>
+            <button class="close"><i class="fas fa-times"></i></button>
+        </div>
+    </div>
+
+    <!-- Container principal -->
+    <div class="main-container">
+        <!-- Sidebar de navegação -->
+        <div class="sidebar">
+            <div class="user-info">
+                <i class="fas fa-user-md" id="userIcon"></i>
+                <span id="userInfo">Usuário não identificado</span>
+            </div>
+            
+            <div class="nav-menu">
+                <a href="index_novo.html" class="nav-item active">
+                    <i class="fas fa-home"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="pacientes_novo.html" class="nav-item">
+                    <i class="fas fa-user-injured"></i>
+                    <span>Pacientes</span>
+                </a>
+                <a href="medicamentos_novo.html" class="nav-item">
+                    <i class="fas fa-pills"></i>
+                    <span>Medicamentos</span>
+                </a>
+                <a href="receitas_novo.html" class="nav-item">
+                    <i class="fas fa-file-prescription"></i>
+                    <span>Receitas</span>
+                </a>
+                <a href="configuracoes_novo.html" class="nav-item">
+                    <i class="fas fa-cog"></i>
+                    <span>Configurações</span>
+                </a>
+            </div>
+            
+            <a href="identificacao_novo.html" class="nav-item">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>Fazer Login</span>
+            </a>
+        </div>
+
+        <!-- Conteúdo principal -->
+        <div class="content">
+            <div class="content-header">
+                <h2>Dashboard</h2>
+                <p>Bem-vindo ao SISMED Perobal - Sistema de Gestão de Receitas Médicas</p>
+            </div>
+
+            <!-- Cards de estatísticas -->
+            <div class="dashboard-cards">
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Total de Pacientes</h3>
+                        <i class="fas fa-user-injured text-primary"></i>
+                    </div>
+                    <div class="card-body">
+                        <div class="stat-value" id="totalPacientes">0</div>
+                        <div class="stat-label">Pacientes cadastrados</div>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Total de Medicamentos</h3>
+                        <i class="fas fa-pills text-success"></i>
+                    </div>
+                    <div class="card-body">
+                        <div class="stat-value" id="totalMedicamentos">0</div>
+                        <div class="stat-label">Medicamentos cadastrados</div>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Receitas do Mês</h3>
+                        <i class="fas fa-file-prescription text-info"></i>
+                    </div>
+                    <div class="card-body">
+                        <div class="stat-value" id="receitasMes">0</div>
+                        <div class="stat-label">Receitas emitidas</div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Ações Rápidas</h3>
+                        <i class="fas fa-bolt text-warning"></i>
+                    </div>
+                    <div class="card-body">
+                        <div class="d-flex flex-column gap-2">
+                            <a href="pacientes_novo.html" class="btn btn-primary">
+                                <i class="fas fa-user-plus"></i>
+                                Novo Paciente
+                            </a>
+                            <a href="receitas_novo.html" class="btn btn-success">
+                                <i class="fas fa-file-prescription"></i>
+                                Nova Receita
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tabela de pacientes recentes -->
+            <div class="table-container">
+                <div class="table-header">
+                    <h3>Pacientes Recentes</h3>
+                    <div class="table-actions">
+                        <a href="pacientes_novo.html" class="btn btn-primary">
+                            <i class="fas fa-plus"></i> Gerenciar Pacientes
+                        </a>
+                    </div>
+                </div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Nome</th>
+                            <th>Data Nasc.</th>
+                            <th>CNS</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="pacientesRecentes">
+                        <tr>
+                            <td colspan="4" class="text-center text-gray">
+                                <i class="fas fa-info-circle"></i>
+                                Nenhum paciente cadastrado ainda
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Tabela de medicamentos -->
+            <div class="table-container">
+                <div class="table-header">
+                    <h3>Medicamentos Disponíveis</h3>
+                    <div class="table-actions">
+                        <a href="medicamentos_novo.html" class="btn btn-primary">
+                            <i class="fas fa-plus"></i> Gerenciar Medicamentos
+                        </a>
+                    </div>
+                </div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Nome</th>
+                            <th>Dosagem</th>
+                            <th>Apresentação</th>
+                            <th>Tipo</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="medicamentosDisponiveis">
+                        <tr>
+                            <td colspan="5" class="text-center text-gray">
+                                <i class="fas fa-info-circle"></i>
+                                Nenhum medicamento cadastrado ainda
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Histórico de receitas recentes -->
+            <div class="table-container">
+                <div class="table-header">
+                    <h3>Receitas Recentes</h3>
+                    <div class="table-actions">
+                        <a href="receitas_novo.html" class="btn btn-primary">
+                            <i class="fas fa-plus"></i> Nova Receita
+                        </a>
+                    </div>
+                </div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Paciente</th>
+                            <th>Data/Hora</th>
+                            <th>Medicamentos</th>
+                            <th>Período</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="receitasRecentes">
+                        <tr>
+                            <td colspan="5" class="text-center text-gray">
+                                <i class="fas fa-info-circle"></i>
+                                Nenhuma receita emitida ainda
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast container -->
+    <div class="toast-container"></div>
+
+    <script>
+        // Carrega informações do usuário logado
+        document.addEventListener('DOMContentLoaded', function() {
+            carregarInfoUsuario();
+            carregarEstatisticas();
+            carregarPacientesRecentes();
+            carregarMedicamentosDisponiveis();
+            carregarReceitasRecentes();
+        });
+
+        function carregarInfoUsuario() {
+            const sessao = sessionStorage.getItem('sismed_sessao');
+            if (sessao) {
+                const dados = JSON.parse(sessao);
+                const userInfo = document.getElementById('userInfo');
+                const userIcon = document.getElementById('userIcon');
+                
+                let icone = 'fas fa-user';
+                let texto = dados.nome;
+                
+                switch(dados.tipo) {
+                    case 'medico':
+                        icone = 'fas fa-user-md';
+                        texto += dados.especialidade ? ` - ${dados.especialidade}` : '';
+                        texto += dados.registro ? ` - ${dados.registro}` : '';
+                        break;
+                    case 'enfermeiro':
+                        icone = 'fas fa-user-nurse';
+                        texto += dados.registro ? ` - ${dados.registro}` : '';
+                        break;
+                    case 'farmaceutico':
+                        icone = 'fas fa-pills';
+                        texto += dados.registro ? ` - ${dados.registro}` : '';
+                        break;
+                    case 'fisioterapeuta':
+                        icone = 'fas fa-dumbbell';
+                        texto += dados.registro ? ` - ${dados.registro}` : '';
+                        break;
+                    case 'visitante':
+                        icone = 'fas fa-eye';
+                        texto += ' - Visitante';
+                        break;
+                    default:
+                        icone = 'fas fa-user';
+                        texto += dados.registro ? ` - ${dados.registro}` : '';
+                }
+                
+                userIcon.className = icone;
+                userInfo.textContent = texto;
+            } else {
+                // Redireciona para login se não há sessão
+                window.location.href = 'identificacao_novo.html';
+            }
+        }
+
+        function carregarEstatisticas() {
+            // Carrega estatísticas dos dados salvos
+            const pacientes = JSON.parse(localStorage.getItem('sismed_pacientes') || '[]');
+            const medicamentos = JSON.parse(localStorage.getItem('sismed_medicamentos') || '[]');
+            const receitas = JSON.parse(localStorage.getItem('sismed_receitas') || '[]');
+            
+            document.getElementById('totalPacientes').textContent = pacientes.length;
+            document.getElementById('totalMedicamentos').textContent = medicamentos.length;
+            
+            // Conta receitas do mês atual
+            const agora = new Date();
+            const mesAtual = agora.getMonth();
+            const anoAtual = agora.getFullYear();
+            
+            const receitasMes = receitas.filter(receita => {
+                const dataReceita = new Date(receita.dataEmissao);
+                return dataReceita.getMonth() === mesAtual && dataReceita.getFullYear() === anoAtual;
+            });
+            
+            document.getElementById('receitasMes').textContent = receitasMes.length;
+        }
+
+        function carregarPacientesRecentes() {
+            const pacientes = JSON.parse(localStorage.getItem('sismed_pacientes') || '[]');
+            const tbody = document.getElementById('pacientesRecentes');
+            
+            if (pacientes.length === 0) {
+                return; // Mantém a mensagem padrão
+            }
+            
+            // Mostra os 5 pacientes mais recentes
+            const pacientesRecentes = pacientes.slice(-5).reverse();
+            
+            tbody.innerHTML = pacientesRecentes.map(paciente => `
+                <tr>
+                    <td>${paciente.nome}</td>
+                    <td>${formatarData(paciente.dataNascimento)}</td>
+                    <td>${paciente.cns}</td>
+                    <td class="action-buttons">
+                        <button class="action-btn" title="Editar" onclick="editarPaciente('${paciente.id}')">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="action-btn" title="Gerar Receita" onclick="gerarReceita('${paciente.id}')">
+                            <i class="fas fa-file-prescription"></i>
+                        </button>
+                        <button class="action-btn" title="Excluir" onclick="excluirPaciente('${paciente.id}')">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function carregarMedicamentosDisponiveis() {
+            const medicamentos = JSON.parse(localStorage.getItem('sismed_medicamentos') || '[]');
+            const tbody = document.getElementById('medicamentosDisponiveis');
+            
+            if (medicamentos.length === 0) {
+                return; // Mantém a mensagem padrão
+            }
+            
+            // Mostra os 5 medicamentos mais recentes
+            const medicamentosRecentes = medicamentos.slice(-5).reverse();
+            
+            tbody.innerHTML = medicamentosRecentes.map(medicamento => `
+                <tr class="${medicamento.tipo === 'controlado' ? 'medicamento-controlado' : ''}">
+                    <td>${medicamento.nome}</td>
+                    <td>${medicamento.dosagem}</td>
+                    <td>${medicamento.apresentacao}</td>
+                    <td>
+                        <span class="badge ${medicamento.tipo === 'controlado' ? 'badge-warning' : 'badge-success'}">
+                            ${medicamento.tipo === 'controlado' ? 'Controlado' : 'Comum'}
+                        </span>
+                    </td>
+                    <td class="action-buttons">
+                        <button class="action-btn" title="Editar" onclick="editarMedicamento('${medicamento.id}')">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="action-btn" title="Excluir" onclick="excluirMedicamento('${medicamento.id}')">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function carregarReceitasRecentes() {
+            const receitas = JSON.parse(localStorage.getItem('sismed_receitas') || '[]');
+            const tbody = document.getElementById('receitasRecentes');
+            
+            if (receitas.length === 0) {
+                return; // Mantém a mensagem padrão
+            }
+            
+            // Mostra as 5 receitas mais recentes
+            const receitasRecentes = receitas.slice(-5).reverse();
+            
+            tbody.innerHTML = receitasRecentes.map(receita => `
+                <tr>
+                    <td>${receita.pacienteNome}</td>
+                    <td>${formatarDataHora(receita.dataEmissao)}</td>
+                    <td>${receita.medicamentos.length} medicamento(s)</td>
+                    <td>${receita.periodo} mês(es)</td>
+                    <td class="action-buttons">
+                        <button class="action-btn" title="Visualizar" onclick="visualizarReceita('${receita.id}')">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                        <button class="action-btn" title="Reimprimir" onclick="reimprimirReceita('${receita.id}')">
+                            <i class="fas fa-print"></i>
+                        </button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        // Funções de ação
+        function editarPaciente(id) {
+            window.location.href = `pacientes_novo.html?editar=${id}`;
+        }
+
+        function gerarReceita(pacienteId) {
+            window.location.href = `receitas_novo.html?paciente=${pacienteId}`;
+        }
+
+        function excluirPaciente(id) {
+            if (confirm('Tem certeza que deseja excluir este paciente?')) {
+                let pacientes = JSON.parse(localStorage.getItem('sismed_pacientes') || '[]');
+                pacientes = pacientes.filter(p => p.id !== id);
+                localStorage.setItem('sismed_pacientes', JSON.stringify(pacientes));
+                carregarPacientesRecentes();
+                carregarEstatisticas();
+                showToast('Paciente excluído com sucesso!', 'success');
+            }
+        }
+
+        function editarMedicamento(id) {
+            window.location.href = `medicamentos_novo.html?editar=${id}`;
+        }
+
+        function excluirMedicamento(id) {
+            if (confirm('Tem certeza que deseja excluir este medicamento?')) {
+                let medicamentos = JSON.parse(localStorage.getItem('sismed_medicamentos') || '[]');
+                medicamentos = medicamentos.filter(m => m.id !== id);
+                localStorage.setItem('sismed_medicamentos', JSON.stringify(medicamentos));
+                carregarMedicamentosDisponiveis();
+                carregarEstatisticas();
+                showToast('Medicamento excluído com sucesso!', 'success');
+            }
+        }
+
+        function visualizarReceita(id) {
+            window.location.href = `receitas_novo.html?visualizar=${id}`;
+        }
+
+        function reimprimirReceita(id) {
+            const receitas = JSON.parse(localStorage.getItem('sismed_receitas') || '[]');
+            const receita = receitas.find(r => r.id === id);
+            if (receita) {
+                // Aqui seria implementada a lógica de reimpressão
+                showToast('Funcionalidade de reimpressão será implementada', 'info');
+            }
+        }
+
+        // Controles de janela
+        document.querySelector('.minimize').addEventListener('click', function() {
+            showToast('Função de minimizar não disponível no navegador', 'info');
+        });
+        
+        document.querySelector('.maximize').addEventListener('click', function() {
+            if (document.fullscreenElement) {
+                document.exitFullscreen();
+            } else {
+                document.documentElement.requestFullscreen();
+            }
+        });
+        
+        document.querySelector('.close').addEventListener('click', function() {
+            if (confirm('Deseja realmente fechar o sistema?')) {
+                window.close();
+            }
+        });
+
+        // Funções utilitárias
+        function formatarData(data) {
+            return new Date(data).toLocaleDateString('pt-BR');
+        }
+
+        function formatarDataHora(data) {
+            return new Date(data).toLocaleString('pt-BR');
+        }
+
+        // Função para mostrar toast notifications
+        function showToast(message, type = 'info') {
+            const toast = document.createElement('div');
+            toast.className = `toast toast-${type}`;
+            
+            const icon = type === 'success' ? 'check-circle' : 
+                        type === 'error' ? 'exclamation-circle' : 
+                        type === 'warning' ? 'exclamation-triangle' : 'info-circle';
+            
+            toast.innerHTML = `
+                <div class="toast-header">
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <i class="fas fa-${icon}"></i>
+                        <strong>${type.charAt(0).toUpperCase() + type.slice(1)}</strong>
+                    </div>
+                    <button class="toast-close" onclick="this.parentElement.parentElement.remove()">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="toast-body">${message}</div>
+            `;
+            
+            document.querySelector('.toast-container').appendChild(toast);
+            
+            // Remove toast após 5 segundos
+            setTimeout(() => {
+                if (toast.parentElement) {
+                    toast.remove();
+                }
+            }, 5000);
+        }
+    </script>
+</body>
+</html>
+

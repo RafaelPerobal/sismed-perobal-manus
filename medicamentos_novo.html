@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medicamentos - SISMED Perobal</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style_novo.css">
+</head>
+<body>
+    <!-- Barra de título no estilo Windows -->
+    <div class="title-bar">
+        <div class="logo">
+            <i class="fas fa-hospital"></i>
+            <h1>SISMED Perobal - Medicamentos</h1>
+        </div>
+        <div class="window-controls">
+            <button class="minimize"><i class="fas fa-minus"></i></button>
+            <button class="maximize"><i class="far fa-square"></i></button>
+            <button class="close"><i class="fas fa-times"></i></button>
+        </div>
+    </div>
+
+    <!-- Container principal -->
+    <div class="main-container">
+        <!-- Sidebar de navegação -->
+        <div class="sidebar">
+            <div class="user-info">
+                <i class="fas fa-user-md" id="userIcon"></i>
+                <span id="userInfo">Usuário não identificado</span>
+            </div>
+            
+            <div class="nav-menu">
+                <a href="index_novo.html" class="nav-item">
+                    <i class="fas fa-home"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="pacientes_novo.html" class="nav-item">
+                    <i class="fas fa-user-injured"></i>
+                    <span>Pacientes</span>
+                </a>
+                <a href="medicamentos_novo.html" class="nav-item active">
+                    <i class="fas fa-pills"></i>
+                    <span>Medicamentos</span>
+                </a>
+                <a href="receitas_novo.html" class="nav-item">
+                    <i class="fas fa-file-prescription"></i>
+                    <span>Receitas</span>
+                </a>
+                <a href="configuracoes_novo.html" class="nav-item">
+                    <i class="fas fa-cog"></i>
+                    <span>Configurações</span>
+                </a>
+            </div>
+            
+            <a href="identificacao_novo.html" class="nav-item">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>Sair</span>
+            </a>
+        </div>
+
+        <!-- Conteúdo principal -->
+        <div class="content">
+            <div class="content-header">
+                <h2>Gerenciamento de Medicamentos</h2>
+                <p>Cadastre e gerencie os medicamentos disponíveis no sistema</p>
+            </div>
+
+            <!-- Seção de busca e cadastro -->
+            <div class="card mb-3">
+                <div class="card-header">
+                    <h3>Buscar Medicamentos</h3>
+                </div>
+                <div class="card-body">
+                    <div class="search-container">
+                        <input type="text" id="searchInput" class="search-input" placeholder="Buscar por nome, dosagem ou apresentação...">
+                        <select id="filtroTipo" class="form-control" style="max-width: 150px;">
+                            <option value="">Todos os tipos</option>
+                            <option value="comum">Comum</option>
+                            <option value="controlado">Controlado</option>
+                        </select>
+                        <button class="btn btn-primary" onclick="buscarMedicamentos()">
+                            <i class="fas fa-search"></i>
+                            Buscar
+                        </button>
+                        <button class="btn btn-success" onclick="abrirModalCadastro()">
+                            <i class="fas fa-plus"></i>
+                            Novo Medicamento
+                        </button>
+                    </div>
+                    <div id="resultadoBusca" class="mt-2" style="display: none;">
+                        <small class="text-gray">
+                            <i class="fas fa-info-circle"></i>
+                            <span id="mensagemBusca"></span>
+                        </small>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Estatísticas rápidas -->
+            <div class="dashboard-cards mb-3">
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Total de Medicamentos</h3>
+                        <i class="fas fa-pills text-primary"></i>
+                    </div>
+                    <div class="card-body">
+                        <div class="stat-value" id="totalMedicamentos">0</div>
+                        <div class="stat-label">Medicamentos cadastrados</div>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Medicamentos Comuns</h3>
+                        <i class="fas fa-check-circle text-success"></i>
+                    </div>
+                    <div class="card-body">
+                        <div class="stat-value" id="totalComuns">0</div>
+                        <div class="stat-label">Medicamentos comuns</div>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Medicamentos Controlados</h3>
+                        <i class="fas fa-exclamation-triangle text-warning"></i>
+                    </div>
+                    <div class="card-body">
+                        <div class="stat-value" id="totalControlados">0</div>
+                        <div class="stat-label">Medicamentos controlados</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Lista de medicamentos -->
+            <div class="table-container">
+                <div class="table-header">
+                    <h3>Medicamentos Cadastrados</h3>
+                    <div class="table-actions">
+                        <span class="text-gray">Total: <strong id="totalMedicamentosLista">0</strong> medicamentos</span>
+                    </div>
+                </div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Nome</th>
+                            <th>Dosagem</th>
+                            <th>Apresentação</th>
+                            <th>Tipo</th>
+                            <th>Posologia Padrão</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="listaMedicamentos">
+                        <tr>
+                            <td colspan="6" class="text-center text-gray">
+                                <i class="fas fa-info-circle"></i>
+                                Nenhum medicamento cadastrado ainda
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de cadastro/edição -->
+    <div class="modal" id="modalMedicamento">
+        <div class="modal-dialog">
+            <div class="modal-header">
+                <h3 id="modalTitle">Novo Medicamento</h3>
+                <button class="modal-close" onclick="fecharModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="formMedicamento">
+                    <input type="hidden" id="medicamentoId">
+                    
+                    <div class="form-group">
+                        <label for="nome">Nome do Medicamento *</label>
+                        <input type="text" id="nome" class="form-control" required placeholder="Ex: Amoxicilina">
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-col">
+                            <label for="dosagem">Dosagem *</label>
+                            <input type="text" id="dosagem" class="form-control" required placeholder="Ex: 500mg">
+                        </div>
+                        <div class="form-col">
+                            <label for="apresentacao">Apresentação *</label>
+                            <select id="apresentacao" class="form-control" required>
+                                <option value="">Selecione a apresentação</option>
+                                <option value="Comprimido">Comprimido</option>
+                                <option value="Cápsula">Cápsula</option>
+                                <option value="Xarope">Xarope</option>
+                                <option value="Suspensão">Suspensão</option>
+                                <option value="Solução">Solução</option>
+                                <option value="Pomada">Pomada</option>
+                                <option value="Creme">Creme</option>
+                                <option value="Gel">Gel</option>
+                                <option value="Ampola">Ampola</option>
+                                <option value="Frasco">Frasco</option>
+                                <option value="Outro">Outro</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="tipo">Tipo de Medicamento *</label>
+                        <select id="tipo" class="form-control" required>
+                            <option value="">Selecione o tipo</option>
+                            <option value="comum">Comum</option>
+                            <option value="controlado">Controlado</option>
+                        </select>
+                        <small class="text-gray">
+                            <i class="fas fa-info-circle"></i>
+                            Medicamentos controlados exigem posologia obrigatória nas receitas
+                        </small>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="posologiaPadrao">Posologia Padrão</label>
+                        <input type="text" id="posologiaPadrao" class="form-control" placeholder="Ex: 1 comprimido de 8 em 8 horas">
+                        <small class="text-gray">
+                            <i class="fas fa-info-circle"></i>
+                            Posologia que será sugerida automaticamente nas receitas
+                        </small>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="observacoes">Observações</label>
+                        <textarea id="observacoes" class="form-control" rows="3" placeholder="Informações adicionais sobre o medicamento"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn" onclick="fecharModal()">Cancelar</button>
+                <button class="btn btn-primary" onclick="salvarMedicamento()">
+                    <i class="fas fa-save"></i>
+                    Salvar
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast container -->
+    <div class="toast-container"></div>
+
+    <script>
+        let medicamentos = [];
+        let medicamentoEditando = null;
+
+        // Carrega dados ao inicializar
+        document.addEventListener('DOMContentLoaded', function() {
+            carregarInfoUsuario();
+            carregarMedicamentos();
+            
+            // Verifica se deve editar um medicamento específico
+            const urlParams = new URLSearchParams(window.location.search);
+            const editarId = urlParams.get('editar');
+            if (editarId) {
+                editarMedicamento(editarId);
+            }
+        });
+
+        function carregarInfoUsuario() {
+            const sessao = sessionStorage.getItem('sismed_sessao');
+            if (sessao) {
+                const dados = JSON.parse(sessao);
+                const userInfo = document.getElementById('userInfo');
+                const userIcon = document.getElementById('userIcon');
+                
+                let icone = 'fas fa-user';
+                let texto = dados.nome;
+                
+                switch(dados.tipo) {
+                    case 'medico':
+                        icone = 'fas fa-user-md';
+                        texto += dados.especialidade ? ` - ${dados.especialidade}` : '';
+                        texto += dados.registro ? ` - ${dados.registro}` : '';
+                        break;
+                    case 'enfermeiro':
+                        icone = 'fas fa-user-nurse';
+                        texto += dados.registro ? ` - ${dados.registro}` : '';
+                        break;
+                    case 'farmaceutico':
+                        icone = 'fas fa-pills';
+                        texto += dados.registro ? ` - ${dados.registro}` : '';
+                        break;
+                    case 'fisioterapeuta':
+                        icone = 'fas fa-dumbbell';
+                        texto += dados.registro ? ` - ${dados.registro}` : '';
+                        break;
+                    case 'visitante':
+                        icone = 'fas fa-eye';
+                        texto += ' - Visitante';
+                        break;
+                    default:
+                        icone = 'fas fa-user';
+                        texto += dados.registro ? ` - ${dados.registro}` : '';
+                }
+                
+                userIcon.className = icone;
+                userInfo.textContent = texto;
+            } else {
+                window.location.href = 'identificacao_novo.html';
+            }
+        }
+
+        function carregarMedicamentos() {
+            medicamentos = JSON.parse(localStorage.getItem('sismed_medicamentos') || '[]');
+            renderizarListaMedicamentos(medicamentos);
+            atualizarEstatisticas();
+        }
+
+        function atualizarEstatisticas() {
+            const total = medicamentos.length;
+            const comuns = medicamentos.filter(m => m.tipo === 'comum').length;
+            const controlados = medicamentos.filter(m => m.tipo === 'controlado').length;
+            
+            document.getElementById('totalMedicamentos').textContent = total;
+            document.getElementById('totalComuns').textContent = comuns;
+            document.getElementById('totalControlados').textContent = controlados;
+            document.getElementById('totalMedicamentosLista').textContent = total;
+        }
+
+        function renderizarListaMedicamentos(lista) {
+            const tbody = document.getElementById('listaMedicamentos');
+            
+            if (lista.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="6" class="text-center text-gray">
+                            <i class="fas fa-info-circle"></i>
+                            Nenhum medicamento encontrado
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+            
+            tbody.innerHTML = lista.map(medicamento => `
+                <tr class="${medicamento.tipo === 'controlado' ? 'medicamento-controlado' : ''}">
+                    <td>
+                        <strong>${medicamento.nome}</strong>
+                        ${medicamento.tipo === 'controlado' ? '<i class="fas fa-exclamation-triangle text-warning ml-1" title="Medicamento Controlado"></i>' : ''}
+                    </td>
+                    <td>${medicamento.dosagem}</td>
+                    <td>${medicamento.apresentacao}</td>
+                    <td>
+                        <span class="badge ${medicamento.tipo === 'controlado' ? 'badge-warning' : 'badge-success'}">
+                            ${medicamento.tipo === 'controlado' ? 'Controlado' : 'Comum'}
+                        </span>
+                    </td>
+                    <td>${medicamento.posologiaPadrao || '-'}</td>
+                    <td class="action-buttons">
+                        <button class="action-btn" title="Editar" onclick="editarMedicamento('${medicamento.id}')">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="action-btn" title="Excluir" onclick="excluirMedicamento('${medicamento.id}')">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function buscarMedicamentos() {
+            const termo = document.getElementById('searchInput').value.toLowerCase().trim();
+            const filtroTipo = document.getElementById('filtroTipo').value;
+            const resultadoBusca = document.getElementById('resultadoBusca');
+            const mensagemBusca = document.getElementById('mensagemBusca');
+            
+            let resultados = medicamentos;
+            
+            // Filtro por tipo
+            if (filtroTipo) {
+                resultados = resultados.filter(medicamento => medicamento.tipo === filtroTipo);
+            }
+            
+            // Filtro por termo de busca
+            if (termo) {
+                resultados = resultados.filter(medicamento => 
+                    medicamento.nome.toLowerCase().includes(termo) ||
+                    medicamento.dosagem.toLowerCase().includes(termo) ||
+                    medicamento.apresentacao.toLowerCase().includes(termo)
+                );
+            }
+            
+            renderizarListaMedicamentos(resultados);
+            
+            if (termo || filtroTipo) {
+                if (resultados.length === 0) {
+                    mensagemBusca.innerHTML = `Nenhum medicamento encontrado. <button class="btn btn-success btn-sm" onclick="abrirModalCadastro('${termo}')">Cadastrar novo medicamento</button>`;
+                } else {
+                    mensagemBusca.textContent = `${resultados.length} medicamento(s) encontrado(s)`;
+                }
+                resultadoBusca.style.display = 'block';
+            } else {
+                resultadoBusca.style.display = 'none';
+            }
+        }
+
+        function abrirModalCadastro(nomeInicial = '') {
+            medicamentoEditando = null;
+            document.getElementById('modalTitle').textContent = 'Novo Medicamento';
+            document.getElementById('formMedicamento').reset();
+            document.getElementById('medicamentoId').value = '';
+            
+            if (nomeInicial) {
+                document.getElementById('nome').value = nomeInicial;
+            }
+            
+            document.getElementById('modalMedicamento').classList.add('show');
+        }
+
+        function editarMedicamento(id) {
+            const medicamento = medicamentos.find(m => m.id === id);
+            if (!medicamento) return;
+            
+            medicamentoEditando = medicamento;
+            document.getElementById('modalTitle').textContent = 'Editar Medicamento';
+            
+            document.getElementById('medicamentoId').value = medicamento.id;
+            document.getElementById('nome').value = medicamento.nome;
+            document.getElementById('dosagem').value = medicamento.dosagem;
+            document.getElementById('apresentacao').value = medicamento.apresentacao;
+            document.getElementById('tipo').value = medicamento.tipo;
+            document.getElementById('posologiaPadrao').value = medicamento.posologiaPadrao || '';
+            document.getElementById('observacoes').value = medicamento.observacoes || '';
+            
+            document.getElementById('modalMedicamento').classList.add('show');
+        }
+
+        function salvarMedicamento() {
+            const form = document.getElementById('formMedicamento');
+            if (!form.checkValidity()) {
+                form.reportValidity();
+                return;
+            }
+            
+            const dados = {
+                id: document.getElementById('medicamentoId').value || gerarId(),
+                nome: document.getElementById('nome').value,
+                dosagem: document.getElementById('dosagem').value,
+                apresentacao: document.getElementById('apresentacao').value,
+                tipo: document.getElementById('tipo').value,
+                posologiaPadrao: document.getElementById('posologiaPadrao').value,
+                observacoes: document.getElementById('observacoes').value,
+                dataCadastro: medicamentoEditando ? medicamentoEditando.dataCadastro : new Date().toISOString()
+            };
+            
+            // Verifica se medicamento já existe (mesmo nome, dosagem e apresentação)
+            const medicamentoExistente = medicamentos.find(m => 
+                m.nome.toLowerCase() === dados.nome.toLowerCase() &&
+                m.dosagem.toLowerCase() === dados.dosagem.toLowerCase() &&
+                m.apresentacao.toLowerCase() === dados.apresentacao.toLowerCase() &&
+                m.id !== dados.id
+            );
+            
+            if (medicamentoExistente) {
+                showToast('Medicamento com mesmo nome, dosagem e apresentação já cadastrado!', 'error');
+                return;
+            }
+            
+            if (medicamentoEditando) {
+                // Atualiza medicamento existente
+                const index = medicamentos.findIndex(m => m.id === dados.id);
+                medicamentos[index] = dados;
+                showToast('Medicamento atualizado com sucesso!', 'success');
+            } else {
+                // Adiciona novo medicamento
+                medicamentos.push(dados);
+                showToast('Medicamento cadastrado com sucesso!', 'success');
+            }
+            
+            localStorage.setItem('sismed_medicamentos', JSON.stringify(medicamentos));
+            carregarMedicamentos();
+            fecharModal();
+        }
+
+        function excluirMedicamento(id) {
+            const medicamento = medicamentos.find(m => m.id === id);
+            if (!medicamento) return;
+            
+            if (confirm(`Tem certeza que deseja excluir o medicamento "${medicamento.nome} ${medicamento.dosagem}"?`)) {
+                medicamentos = medicamentos.filter(m => m.id !== id);
+                localStorage.setItem('sismed_medicamentos', JSON.stringify(medicamentos));
+                carregarMedicamentos();
+                showToast('Medicamento excluído com sucesso!', 'success');
+            }
+        }
+
+        function fecharModal() {
+            document.getElementById('modalMedicamento').classList.remove('show');
+        }
+
+        // Busca em tempo real
+        document.getElementById('searchInput').addEventListener('input', function() {
+            const termo = this.value.toLowerCase().trim();
+            if (termo.length >= 2) {
+                buscarMedicamentos();
+            } else if (termo.length === 0) {
+                buscarMedicamentos();
+            }
+        });
+
+        // Filtro por tipo
+        document.getElementById('filtroTipo').addEventListener('change', buscarMedicamentos);
+
+        // Fechar modal clicando fora
+        document.getElementById('modalMedicamento').addEventListener('click', function(e) {
+            if (e.target === this) {
+                fecharModal();
+            }
+        });
+
+        // Controles de janela
+        document.querySelector('.minimize').addEventListener('click', function() {
+            showToast('Função de minimizar não disponível no navegador', 'info');
+        });
+        
+        document.querySelector('.maximize').addEventListener('click', function() {
+            if (document.fullscreenElement) {
+                document.exitFullscreen();
+            } else {
+                document.documentElement.requestFullscreen();
+            }
+        });
+        
+        document.querySelector('.close').addEventListener('click', function() {
+            if (confirm('Deseja realmente fechar o sistema?')) {
+                window.close();
+            }
+        });
+
+        // Funções utilitárias
+        function gerarId() {
+            return Date.now().toString(36) + Math.random().toString(36).substr(2);
+        }
+
+        // Função para mostrar toast notifications
+        function showToast(message, type = 'info') {
+            const toast = document.createElement('div');
+            toast.className = `toast toast-${type}`;
+            
+            const icon = type === 'success' ? 'check-circle' : 
+                        type === 'error' ? 'exclamation-circle' : 
+                        type === 'warning' ? 'exclamation-triangle' : 'info-circle';
+            
+            toast.innerHTML = `
+                <div class="toast-header">
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <i class="fas fa-${icon}"></i>
+                        <strong>${type.charAt(0).toUpperCase() + type.slice(1)}</strong>
+                    </div>
+                    <button class="toast-close" onclick="this.parentElement.parentElement.remove()">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="toast-body">${message}</div>
+            `;
+            
+            document.querySelector('.toast-container').appendChild(toast);
+            
+            // Remove toast após 5 segundos
+            setTimeout(() => {
+                if (toast.parentElement) {
+                    toast.remove();
+                }
+            }, 5000);
+        }
+    </script>
+</body>
+</html>
+

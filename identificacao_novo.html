@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SISMED Perobal - Identificação</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style_novo.css">
+</head>
+<body>
+    <!-- Barra de título no estilo Windows -->
+    <div class="title-bar">
+        <div class="logo">
+            <i class="fas fa-hospital"></i>
+            <h1>SISMED Perobal - Identificação</h1>
+        </div>
+        <div class="window-controls">
+            <button class="minimize"><i class="fas fa-minus"></i></button>
+            <button class="maximize"><i class="far fa-square"></i></button>
+            <button class="close"><i class="fas fa-times"></i></button>
+        </div>
+    </div>
+
+    <!-- Container de login -->
+    <div class="login-container">
+        <div class="login-card">
+            <div class="login-header">
+                <div class="login-logo">
+                    <i class="fas fa-user-md"></i>
+                </div>
+                <h1 class="login-title">SISMED Perobal</h1>
+                <p class="login-subtitle">Sistema de Gestão de Receitas Médicas</p>
+            </div>
+
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="tipoUsuario">Tipo de Usuário *</label>
+                    <select id="tipoUsuario" class="form-control" required>
+                        <option value="">Selecione o tipo de usuário</option>
+                        <option value="medico">Médico</option>
+                        <option value="enfermeiro">Enfermeiro</option>
+                        <option value="farmaceutico">Farmacêutico</option>
+                        <option value="fisioterapeuta">Fisioterapeuta</option>
+                        <option value="visitante">Visitante</option>
+                        <option value="outro">Outro</option>
+                    </select>
+                </div>
+
+                <div class="form-group" id="especialidadeGroup" style="display: none;">
+                    <label for="especialidade">Especialidade</label>
+                    <input type="text" id="especialidade" class="form-control" placeholder="Ex: Clínica Geral">
+                </div>
+
+                <div class="form-group">
+                    <label for="nomeCompleto">Nome Completo *</label>
+                    <input type="text" id="nomeCompleto" class="form-control" placeholder="Digite seu nome completo" required>
+                </div>
+
+                <div class="form-group" id="registroGroup">
+                    <label for="registroProfissional">Registro Profissional</label>
+                    <input type="text" id="registroProfissional" class="form-control" placeholder="Ex: CRM 12345, COREN 54321">
+                </div>
+
+                <div class="form-group">
+                    <label>
+                        <input type="checkbox" id="lembrarDados"> Lembrar dados neste computador
+                    </label>
+                </div>
+
+                <button type="submit" class="btn btn-primary w-100">
+                    <i class="fas fa-sign-in-alt"></i>
+                    Entrar no Sistema
+                </button>
+            </form>
+
+            <div class="text-center mt-3">
+                <small class="text-gray">
+                    <i class="fas fa-shield-alt"></i>
+                    Sistema seguro e protegido
+                </small>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast container -->
+    <div class="toast-container"></div>
+
+    <script>
+        // Carrega dados salvos se existirem
+        document.addEventListener('DOMContentLoaded', function() {
+            const dadosSalvos = localStorage.getItem('sismed_usuario');
+            if (dadosSalvos) {
+                const dados = JSON.parse(dadosSalvos);
+                document.getElementById('tipoUsuario').value = dados.tipo || '';
+                document.getElementById('especialidade').value = dados.especialidade || '';
+                document.getElementById('nomeCompleto').value = dados.nome || '';
+                document.getElementById('registroProfissional').value = dados.registro || '';
+                document.getElementById('lembrarDados').checked = true;
+                
+                // Mostra campo de especialidade se for médico
+                if (dados.tipo === 'medico') {
+                    document.getElementById('especialidadeGroup').style.display = 'block';
+                }
+                
+                // Esconde campo de registro se for visitante
+                if (dados.tipo === 'visitante') {
+                    document.getElementById('registroGroup').style.display = 'none';
+                }
+            }
+        });
+
+        // Controla exibição de campos baseado no tipo de usuário
+        document.getElementById('tipoUsuario').addEventListener('change', function() {
+            const tipo = this.value;
+            const especialidadeGroup = document.getElementById('especialidadeGroup');
+            const registroGroup = document.getElementById('registroGroup');
+            const registroInput = document.getElementById('registroProfissional');
+
+            // Mostra especialidade apenas para médicos
+            if (tipo === 'medico') {
+                especialidadeGroup.style.display = 'block';
+            } else {
+                especialidadeGroup.style.display = 'none';
+                document.getElementById('especialidade').value = '';
+            }
+
+            // Esconde registro profissional para visitantes
+            if (tipo === 'visitante') {
+                registroGroup.style.display = 'none';
+                registroInput.value = '';
+                registroInput.required = false;
+            } else {
+                registroGroup.style.display = 'block';
+                registroInput.required = true;
+            }
+        });
+
+        // Controles de janela
+        document.querySelector('.minimize').addEventListener('click', function() {
+            showToast('Função de minimizar não disponível no navegador', 'info');
+        });
+        
+        document.querySelector('.maximize').addEventListener('click', function() {
+            if (document.fullscreenElement) {
+                document.exitFullscreen();
+            } else {
+                document.documentElement.requestFullscreen();
+            }
+        });
+        
+        document.querySelector('.close').addEventListener('click', function() {
+            if (confirm('Deseja realmente fechar o sistema?')) {
+                window.close();
+            }
+        });
+
+        // Submissão do formulário
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const tipo = document.getElementById('tipoUsuario').value;
+            const especialidade = document.getElementById('especialidade').value;
+            const nome = document.getElementById('nomeCompleto').value;
+            const registro = document.getElementById('registroProfissional').value;
+            const lembrar = document.getElementById('lembrarDados').checked;
+
+            // Validações
+            if (!tipo || !nome) {
+                showToast('Por favor, preencha todos os campos obrigatórios', 'error');
+                return;
+            }
+
+            if (tipo !== 'visitante' && !registro) {
+                showToast('Registro profissional é obrigatório para este tipo de usuário', 'error');
+                return;
+            }
+
+            // Salva dados se solicitado
+            if (lembrar) {
+                const dadosUsuario = {
+                    tipo: tipo,
+                    especialidade: especialidade,
+                    nome: nome,
+                    registro: registro
+                };
+                localStorage.setItem('sismed_usuario', JSON.stringify(dadosUsuario));
+            } else {
+                localStorage.removeItem('sismed_usuario');
+            }
+
+            // Salva dados da sessão
+            const sessaoUsuario = {
+                tipo: tipo,
+                especialidade: especialidade,
+                nome: nome,
+                registro: registro,
+                dataLogin: new Date().toISOString()
+            };
+            sessionStorage.setItem('sismed_sessao', JSON.stringify(sessaoUsuario));
+
+            showToast('Login realizado com sucesso!', 'success');
+            
+            // Redireciona para a página principal após 1 segundo
+            setTimeout(() => {
+                window.location.href = 'index_novo.html';
+            }, 1000);
+        });
+
+        // Função para mostrar toast notifications
+        function showToast(message, type = 'info') {
+            const toast = document.createElement('div');
+            toast.className = `toast toast-${type}`;
+            
+            const icon = type === 'success' ? 'check-circle' : 
+                        type === 'error' ? 'exclamation-circle' : 
+                        type === 'warning' ? 'exclamation-triangle' : 'info-circle';
+            
+            toast.innerHTML = `
+                <div class="toast-header">
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <i class="fas fa-${icon}"></i>
+                        <strong>${type.charAt(0).toUpperCase() + type.slice(1)}</strong>
+                    </div>
+                    <button class="toast-close" onclick="this.parentElement.parentElement.remove()">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="toast-body">${message}</div>
+            `;
+            
+            document.querySelector('.toast-container').appendChild(toast);
+            
+            // Remove toast após 5 segundos
+            setTimeout(() => {
+                if (toast.parentElement) {
+                    toast.remove();
+                }
+            }, 5000);
+        }
+    </script>
+</body>
+</html>
+
